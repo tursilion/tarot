@@ -1,14 +1,11 @@
 19970211
 
-To use this tarot reader, simply extract the files into the
-same directory, and type 'TAROT'.
+To use this tarot reader, simply extract the files into the same directory, and type 'TAROT'.
 
 Instructions are given in program.
-=====================================================
-11 Feb 97 - You may now specify a file to log your
-reading to. It's just as ugly as the output to the screen,
-but it gives you a way to record your session. Thanks to
-Canis for suggesting it.
+
+11 Feb 97 - You may now specify a file to log your reading to. It's just as ugly as the output to the screen,
+but it gives you a way to record your session. Thanks to Canis for suggesting it.
 
 Note that there appears to be a bug with respect to running under DOSBOX, you may have to press CONTROL-Enter instead of just enter to enter lines. If the y/N prompt at the beginning never continues, try that.
 
