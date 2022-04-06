@@ -1,0 +1,690 @@
+TAROT DECK v2.0 by Mike Ward. For entertainment purposes only.
+
+Introduction
+------------
+Tarot cards have existed in one form or another for hundreds of
+years. The deck contains 78 cards, divided into two groups, or
+ARCANA. The Major Arcana contains 22 cards, and are numbered 0-22
+(card 0, the fool, is often not numbered at all.) These are the
+major cards, the "trumps", and have generally stronger meanings
+than those of the minor arcana.
+
+The Minor Arcana contains 56 cards, made up of four suits. They are
+the swords, wands, cups, and pentacles (sometimes called coins.)
+
+This program attempts to read the cards by outlining a very basic
+layout,and presenting generalized meanings for the cards. No
+attempt is made to interpret the proximity of certain cards, for
+there are too many combinations to try to account for. You should
+try to apply to general meanings presented to the subject in
+question to gain a deeper insight into what the cards are trying to
+say.
+
+Remember, the Tarot are not meant as a window into a certain
+future, but rather a mirror that reflects where you are going,
+should you stay on the path you currently take. They are meant to
+induce thought regarding your choices, not to run your life for
+you.
+
+The reading the program attempts for you is known as the Celtic
+Cross. First a card is chosen to represent you, based on your age,
+sex, and temperament. Then 10 cards are drawn, each reflecting a
+different element of the subject, and leading up towards a
+generalized answer. It is up to you to make the proper
+interpretation -- a computer is not up to the task.
+*
+0. The Fool
++
+Folly, mania, extravagance, intoxication, or a very important
+decision.
+-
+Negligence, absence, distribution, carelessness, apathy, nullity or
+vanity.
+*
+1. The Magician
++
+Skill, diplomacy, address, self-confidence, or will.
+-
+Physician, mental disease, disgrace, or disquiet.
+*
+2. The High Priestess
++
+Secrets, the future, silence, wisdom, or science.
+-
+Passion, moral or physical ardour, conceit, or surface knowledge.
+*
+3. The Empress
++
+Fruitfulness, action, or initiative.
+-
+Light, truth, unravelling of involved matters or public rejoicing.
+*
+4. The Emperor
++
+Stability, power, protection, air, reason, or conviction.
+-
+Benevolence, compassion, credit, or confusion, obstruction or
+immaturity for enemies.
+*
+5. The Hierophant
++
+Marriage, captivity, or servitude.
+-
+Society, good understanding, concord, over-kindness, or weakness.
+*
+6. The Lovers
++
+Attraction, love, beauty, or trials overcome.
+-
+Failure, or foolish designs.
+*
+7. The Chariot
++
+Succour, providence, war, triumph, presumption, or vengeance.
+-
+Riot, quarrel, dispute, litigation, or defeat.
+*
+8. Strength
++
+Power, energy, action, courage, or magnanimity.
+-
+Despotism, abuse of power, weakness, or discord.
+*
+9. The Hermit
++
+Prudence, treason, dissimulation, roguery or corruption.
+-
+Concealment, disguise, policy, fear, or unreasoned caution.
+*
+10. Wheel of Fortune
++
+Destiny, fortune, success, luck, or felicity.
+-
+Increase, abundance, or superfluity.
+*
+11. Justice
++
+Equity, rightness, or probity. Simply put: justice.
+-
+Law, bigotry, bias, or excessive severity.
+*
+12. The Hanged Man
++
+Wisdom, circumspection, discernment, trials, sacrifice, a pause
+in life, or intuition.
+-
+Selfishness, the crowd, or body politic.
+*
+13. Death
++
+An end to something, or a complete change of circumstances.
+-
+Inertia, sleep, lethargy, a lack of change.
+*
+14. Temperance
++
+Economy, moderation, frugality, management or accommodation.
+-
+Religion, disunion, unfortunate combinations, or competing
+interests.
+*
+15. The Devil
++
+Ravage, violence, force, an overattachment to material possessions,
+or feeling trapped without looking for a way out.
+-
+Evilness, weakness, pettiness, or overattachment to material
+possessions.
+*
+16. The Tower
++
+Misery, distress, disgrace, deception, violent change, or ruin.
+-
+Major change, possibly violent, oppression, imprisonment or
+tyranny.
+*
+17. The Star
++
+Hope, bright prospects.
+-
+Arrogance, haughtiness or impotence.
+*
+18. The Moon
++
+Hidden enemies, danger, darkness, terror, deception, or error.
+-
+Instability, inconsistency, silence, minor deception or error.
+*
+19. The Sun
++
+Material happiness, fortunate marriage or contentment.
+-
+Happiness, marriage or contentment.
+*
+20. Judgement
++
+Change of position, renewal, the final outcome of something.
+-
+Weakness, simplicity, deliberation, decision or a sentence.
+*
+21. The World
++
+Assured success, voyage, route, emigration, flight, or change of
+place.
+-
+Inertia, fixity, stagnation, or permanence.
+*
+King of Wands
++
+Dark, friendly man, countryman, honest and conscientious.
+-
+Good, but severe. Austere, yet tolerant.
+*
+Queen of Wands
++
+Dark, friendly woman, chaste, loving and honourable.
+-
+Opposition, jealousy, defeat or infidelity.
+*
+Knight of Wands
++
+Departure, flight, emigration, a friendly young man, or change of
+residence.
+-
+Rupture, division, interruption, or discord.
+*
+Page of Wands
++
+Faithful young man, a lover, envoy or postman.
+-
+Announcements, evil news. Indecision and instability.
+*
+Ten of Wands
++
+Oppression, false-pretences, disguise, prelude to battle.
+-
+Contrarieties, difficulties, or intrigues.
+*
+Nine of Wands
++
+Strength in opposition. Ready defense. Possibly awaiting an
+attack.
+-
+Obstacles, adversity, or calamity.
+*
+Eight of Wands
++
+Activity, haste, hope, movement, love.
+-
+Jealousy, internal dispute, bad conscience, or quarrels.
+*
+Seven of Wands
++
+Valour, temporary advantage.
+-
+Perplexity, embarrassments, or anxiety.
+*
+Six of Wands
++
+Victory, great news or hope.
+-
+Apprehension, fear of loss or disloyalty.
+*
+Five of Wands
++
+Imitation, gain, or rough games.
+-
+Litigation, disputes, trickery, or contradiction.
+*
+Four of Wands
++
+Repose, concord, harmony, prosperity, and peace.
+-
+Prosperity, felicity, beauty or embellishment.
+*
+Three of Wands
++
+Established strength, enterprise, effort, trade, commerce, or
+discovery.
+-
+End of troubles, suspension or cessation of adversity, toil and
+disappointment.
+*
+Two of Wands
++
+Sadness despite richness, fortune, or magnificence.
+-
+Surprise, wonder, enchantment, or emotion.
+*
+Ace of Wands
++
+Creation, invention, enterprise, beginning, source, fortune, or
+inheritance.
+-
+Fall, decadence, ruin, perdition, or clouded joy.
+*
+King of Cups
++
+Fair man of business, law or divinity. Equity, art and science.
+Creative intelligence.
+-
+Dishonest, double-dealing man. Roguery, exaction, or injustice.
+*
+Queen of Cups
++
+Good, fair woman, honest, devoted. Vision, success, happiness, or
+pleasure.
+-
+Distinguished but untrustworthy woman, perverse. Vice, dishonour
+or depravity.
+*
+Knight of Cups
++
+Arrival, approach, a messenger, proposition, invitation.
+-
+Trickery, subtlety, swindling or fraud.
+*
+Page of Cups
++
+Fair young man, studious youth, news, message, reflection,
+meditation or business.
+-
+Taste, inclination, attachment, seduction, deception or artifice.
+*
+Ten of Cups
++
+Contentment, perfect happiness.
+-
+False heart, indignation or violence.
+*
+Nine of Cups
++
+Contentment, physical well-being, victory or satisfaction.
+-
+Truth, loyalty, liberty, but mistakes or imperfections exist.
+*
+Eight of Cups
++
+Desertion of that for which one has worked for, discontent.
+-
+Great joy, happiness, feasting, success of an undertaking.
+*
+Seven of Cups
++
+Sentiment, imagination, division of attention to the point where
+nothing is accomplished.
+-
+Desire, will, determination, an important project, focus.
+*
+Six of Cups
++
+Memories of childhood happiness, times past.
+-
+The future, renewal.
+*
+Five of Cups
++
+A card of loss, but something remains. Too much concern is being
+paid to what has been lost, and what remains is being ignored.
+-
+News, alliances, return, or false projects.
+*
+Four of Cups
++
+Weariness, disgust, aversion. Boredom with what one has.
+-
+Novelty, new ideas, new relations.
+*
+Three of Cups
++
+The perfect, happy completion of a matter. Victory, fulfilment,
+solace, healing.
+-
+Expedition, dispatch, end of a matter.
+*
+Two of Cups
++
+Love, passion, friendship, union, the inter-relation of the
+sexes.
+-
+False love, folly, or misunderstanding.
+*
+Ace of Cups
++
+True joy, contentment, abundance, nourishment.
+-
+A false heart, instability, or revolution.
+*
+King of Swords
++
+Judgement, power, command, authority, law, fairness.
+-
+Cruelty, perversity, barbarity, evil intentions.
+*
+Queen of Swords
++
+Widowhood, female sadness, absence, sterility, mourning,
+separation.
+-
+Malice, bigotry, prudery, deceit.
+*
+Knight of Swords
++
+Skill, bravery, capacity, wrath, war, destruction of enemies,
+possibly foolhardiness.
+-
+Imprudence, incapacity, extravagance or cowardice.
+*
+Page of Swords
++
+Authority, overseeing, spying, examination.
+-
+Unprepared state, evil spying.
+*
+Ten of Swords
++
+Pain, sadness, desolation, loss, death.
+-
+Advantage, profit, success, favour, all temporary.
+*
+Nine of Swords
++
+Failure, sadness, miscarriage, delay, deception, disappointment
+or despair.
+-
+Imprisonment, suspicion, doubt, reasonable fear, or shame.
+*
+Eight of Swords
++
+Bad news, crisis, conflict, or sickness.
+-
+Disquiet, difficulty, opposition, accident, or treachery.
+*
+Seven of Swords
++
+Lack of attention, poor guard, reduced defense.
+-
+Good advice, counsel, instruction, a gain over your opponents.
+*
+Six of Swords
++
+Journey by water, a route.
+-
+Declaration, confession, publicity.
+*
+Five of Swords
++
+Degradation, destruction, reversal, dishonour, loss.
+-
+Destruction, reversal, dishonour.
+*
+Four of Swords
++
+Vigilance, retreat, solitude, tomb and coffin.
+-
+Wise administration, circumspection, economy, precaution.
+*
+Three of Swords
++
+Removal, absence, delay, division, sadness.
+-
+Mental alienation, error, loss, distraction, disorder or
+confusion.
+*
+Two of Swords
++
+Conformity, courage, friendship, affection, a state of balance.
+-
+Imposture, falsehood, disloyalty.
+*
+Ace of Swords
++
+Triumph, excessiveness, conquest, successful and powerful force,
+for love and hatred.
+-
+Excessiveness, conquest, powerful force, with disastrous results.
+*
+King of Pentacles
++
+Valour, realising intelligence, aptitude for business or
+mathematics, success in business.
+-
+Vice, weakness, ugliness, perversity, corruption or peril.
+*
+Queen of Pentacles
++
+Opulence, intelligence, generosity, magnificence, security,
+liberty.
+-
+Evilness, suspicion, suspense, fear or mistrust.
+*
+Knight of Pentacles
++
+Utility, serviceability, interest, responsibility.
+-
+Inertia, idleness, stagnation, discouragement, carelessness.
+*
+Page of Pentacles
++
+Application, study, reflection.
+-
+Prodigality, dissipation, liberality, luxury.
+*
+Ten of Pentacles
++
+Gain, riches, family matters, archives.
+-
+Chance, robbery, loss, hazard.
+*
+Nine of Pentacles
++
+Prudence, safety, success, accomplishment, discernment.
+-
+Deception, voided project, bad faith.
+*
+Eight of Pentacles
++
+Work, employment, commission, apprentice, skill.
+-
+Voided ambition, vanity, exaction.
+*
+Seven of Pentacles
++
+Money, business, barter, a pause to reflect on what one has done.
+-
+Anxiety about money.
+*
+Six of Pentacles
++
+Presents, generosity, attention, prosperity.
+-
+Desire, envy, jealousy, illusion.
+*
+Five of Pentacles
++
+Material troubles, love through difficulties, destitution.
+-
+Disorder, chaos, ruin, discord.
+*
+Four of Pentacles
++
+Surety of possessions, holding onto gifts, an inheritance or
+legacy.
+-
+Suspense, delay, opposition.
+*
+Three of Pentacles
++
+Skilled labour, dedication, renown, glory.
+-
+Mediocrity in work, pettiness, weakness.
+*
+Two of Pentacles
++
+Happiness, recreation, enjoyment.
+-
+Forced happiness, simulated enjoyment, letters.
+*
+Ace of Pentacles
++
+Contentment, ecstasy, intelligence, gold.
+-
+The evil side of wealth, bad intelligence.
+!
+0
+-2
+2
+-1
+1
+-1
+1
+0
+2
+1
+1
+1
+2
+-1
+2
+-2
+2
+-2
+-1
+-2
+3
+1
+1
+-1
+0
+-1
+0
+-1
+0
+-1
+-2
+-3
+-3
+-1
+1
+-1
+-2
+-1
+3
+1
+1
+-1
+2
+0
+1
+0
+1
+-1
+1
+-1
+1
+-2
+0
+-1
+2
+-2
+1
+-2
+1
+-2
+1
+-1
+1
+-1
+3
+2
+2
+1
+2
+0
+2
+-2
+1
+-2
+1
+-1
+1
+-1
+1
+-1
+3
+-2
+2
+1
+0
+1
+-1
+2
+0
+0
+-1
+-1
+-1
+1
+2
+1
+2
+-1
+3
+-2
+0
+-2
+-1
+-2
+2
+-1
+0
+-2
+-3
+2
+-3
+-2
+-2
+-2
+-2
+1
+0
+1
+-3
+-2
+-1
+1
+-1
+-1
+0
+-1
+3
+-3
+2
+-2
+1
+-2
+1
+-1
+1
+-1
+2
+-2
+1
+-2
+1
+-1
+1
+-1
+2
+-1
+-1
+-3
+1
+-1
+1
+-2
+2
+-2
+3
+-3
+
