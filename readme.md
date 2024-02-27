@@ -1,4 +1,16 @@
-19970211
+20240226
+
+This program is offered for the TI-99/4A, ColecoVision and for MSDOS.
+
+-TI-
+
+Provided as a 16kb non-inverted cart. Just insert and follow the prompts.
+
+-Coleco-
+
+Standard 32kb cart. Insert and follow the prompts. You'll use the keypad to answer prompts.
+
+-MSDOS-
 
 To use this tarot reader, simply extract the files into the same directory, and type 'TAROT'.
 
