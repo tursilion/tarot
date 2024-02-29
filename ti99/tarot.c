@@ -11,16 +11,18 @@ int picked[11],cnum;
 #include <vdp.h>
 #include <kscan.h>
 #include <string.h>
+#include <system.h>
+#include "cardinc.h"
 
 int main();
 int getyn();
-void getkey();
+void getkey(int suppress);
 void docard();
 int get12(int x);
 void getsig();
 void read(int x);
 void readem();
-void read1();
+void read1(const char *p);
 void readall();
 
 // random number generator
@@ -83,10 +85,49 @@ unsigned int rnd(unsigned int max) {
     return rndnum() % max;
 }
 
+// graphics
+void RLEUnpack(unsigned int p, const unsigned char *buf, unsigned int nMax) {
+	unsigned char z;
+	int cnt;
+
+	cnt = nMax;
+	VDP_SET_ADDRESS_WRITE(p);
+	while (cnt > 0) {
+		z=*buf;
+		if (z&0x80) {
+			// run of byte
+			buf++;
+			z&=0x7f;
+			if (z>cnt) z=cnt;
+			raw_vdpmemset(*buf, z);
+			buf++;
+		} else {
+			// sequence of data
+			buf++;
+			if (z>cnt) z=cnt;
+			raw_vdpmemcpy(buf, z);
+			buf+=z; // this will be wrong if we hit the limit, but we won't need it again
+		}
+		cnt-=z;
+	}
+}
+
 // BBS replacements
 #define rprint(p) printf("%s\n",p)
 #define sndcr() printf("\n")
 #define rinput(x) gets(x, 80)
+
+// scroll only the bottom 8 lines for bitmap split screen
+void scrn_scroll_last8() {
+	// hacky, slow, but functional scroll that takes minimal memory
+	unsigned char x[4];		// 4 byte buffer to speed it up
+	int nLine = nTextEnd-nTextRow+1;    // size of one line
+	for (int adr=nLine*17+gImage; adr<nTextEnd+gImage; adr+=4) {
+		vdpmemread(adr, x, 4);
+		vdpmemcpy(adr-nLine, x, 4);
+	}
+	vdpmemset(nTextRow+gImage, ' ', nLine);	// clear the last line
+}
 
 // main code
 int main()
@@ -130,7 +171,11 @@ int main()
 
 //    strcpy(as,"DSK5.DOR");
 //    ea5ld();
-    getkey();
+    getkey(0);
+    
+    // before we return, there's a bug in the crt0 packer and only page 0 has the reboot
+    exit();
+    
     return 0;
 }
 
@@ -148,9 +193,11 @@ int getyn()
 }
 
 // wait for a keypress
-void getkey()
+void getkey(int suppress)
 {
-    rprint("---Press a key---");
+    if (!suppress) {
+        rprint("---Press a key---");
+    }
     do {
         kscanfast(0);
     } while (KSCAN_KEY == 0xff);
@@ -187,14 +234,14 @@ void docard()
         rprint("The cards are laid out and interpreted");
         rprint("by where and how they lay. This program");
         rprint("will take care of interpretation.");
-        getkey();
+        getkey(0);
         sndcr();
         rprint("A computer can only give general");
         rprint("meanings. Not all the meanings given");
         rprint("necessarily apply. You must decide for");
         rprint("yourself what the cards are trying");
         rprint("to tell you.");
-        getkey();
+        getkey(0);
     }
     random();
     getsig();
@@ -322,42 +369,114 @@ void read(int x)
 // do the full reading
 void readem()
 {
+    set_bitmap(0);
+    nTextFlags = TEXT_WIDTH_32; // remove special purpose flags and make it dumb
+    VDP_SET_REGISTER(VDP_REG_COL, COLOR_DKBLUE);
+    // blank out the color and pattern tables
+    vdpmemset(gColor, 0, 6*1024);
+    vdpmemset(gPattern, 0, 6*1024);
+    // we need to force the character set into the third block    
+    gPattern+=0x1000;
+    charsetlc();
+    gPattern-=0x1000;
+    // set up bitmap on the top, text on the bottom
+    vdpwriteinc(gImage, 0, 512);
+    vdpmemset(gImage+512, ' ', 32*8);
+    // and give the text area some color
+    vdpmemset(gColor+4*1024, 0xf0, 2*1024);
+    
+    // and change the scroll function
+    scrn_scroll = scrn_scroll_last8;
+
     sndcr();
-    //      1234567890123456789012345678901234567890
-    rprint("This card crosses you.. it is your\ncurrent main obstacle.");
-    read1();
-    //      1234567890123456789012345678901234567890
-    rprint("This is beneath you.. it is your\nfoundation in the matter.");
-    read1();
-    //      1234567890123456789012345678901234567890
-    rprint("This is above you.. it is a goal\nof sorts.");
-    read1();
-    //      1234567890123456789012345678901234567890
-    rprint("This is behind you.. recent\npast events.");
-    read1();
-    //      1234567890123456789012345678901234567890
-    rprint("This is before you.. soon to occur.");
-    read1();
-    //      1234567890123456789012345678901234567890
-    rprint("This is your attitude/relationship\ntowards the matter.");
-    read1();
-    //      1234567890123456789012345678901234567890
-    rprint("This is your home environment, people\nand events around you.");
-    read1();
-    //      1234567890123456789012345678901234567890
-    rprint("This card represents your hopes and\nfears.");
-    read1();
-    //      1234567890123456789012345678901234567890
-    rprint("This is the probable outcome, if\nnothing is changed.");
-    read1();
-    //      1234567890123456789012345678901234567890
-    rprint("That is all. Thank you for visiting me..");
+    //      12345678901234567890123456789012
+    read1("This card crosses you.. it is\nyour current main obstacle.");
+    //      12345678901234567890123456789012
+    read1("This is beneath you.. it is yourfoundation in the matter.");
+    //      12345678901234567890123456789012
+    read1("This is above you.. it is a goalof sorts.");
+    //      12345678901234567890123456789012
+    read1("This is behind you.. recent\npast events.");
+    //      12345678901234567890123456789012
+    read1("This is before you.. soon to\noccur.");
+    //      12345678901234567890123456789012
+    read1("This is your attitude/relation-\nship towards the matter.");
+    //      12345678901234567890123456789012
+    read1("This is your home environment,\npeople and events around you.");
+    //      12345678901234567890123456789012
+    read1("This card represents your hopes\nand fears.");
+    //      12345678901234567890123456789012
+    read1("This is the probable outcome, ifnothing is changed.");
+    //      12345678901234567890123456789012
+
+    // hide the old card
+    vdpmemset(gColor, 0, 4*1024);
+    vdpmemset(gImage+16*32, ' ', 8*32);
+    rprint("\nThat is all.\nThank you for visiting me..");
+}
+
+void drawCard(int x) {
+    // display the card. cardTable is C, then P
+    *((volatile unsigned char*)(cardTable[x*2+1].bank))=0;
+    RLEUnpack(gPattern, cardTable[x*2+1].p, 4096);
+    *((volatile unsigned char*)(cardTable[x*2].bank))=0;
+    RLEUnpack(gColor, cardTable[x*2].p, 4096);
+}
+
+void drawCardReverse() {
+    // this actually flips the card, rather than RLEing it again
+    int off=32; // skip the first 4 columns, they are empty
+    // count through the top half
+    for (int row=0; row<8; ++row) {
+        for (int col=4; col<28; ++col) {
+            unsigned char buf[8];
+            unsigned char buf2[8];
+            
+            int vdpsrc=row*32*8 + col*8 + gPattern;
+            int vdpdst=(15-row)*32*8 + col*8 + gPattern;
+            vdpmemread(vdpsrc, buf, 8);
+            vdpmemread(vdpdst, buf2, 8);
+            // invert write
+            VDP_SET_ADDRESS_WRITE(vdpdst);
+            for (int c=7; c>=0; --c) {
+                VDPWD = buf[c];
+            }
+            VDP_SET_ADDRESS_WRITE(vdpsrc);
+            for (int c=7; c>=0; --c) {
+               VDPWD = buf2[c];
+            }
+     
+            vdpsrc=row*32*8 + col*8 + gColor;
+            vdpdst=(15-row)*32*8 + col*8 + gColor;
+            vdpmemread(vdpsrc, buf, 8);
+            vdpmemread(vdpdst, buf2, 8);
+            // invert write
+            //VDP_SET_ADDRESS_WRITE(vdpdst);    // this one causes a compiler error?? impossible reload
+            VDPWA=vdpdst&0xff;
+            VDPWA=(vdpdst>>8)|0x40;
+            for (int c=7; c>=0; --c) {
+                VDPWD = buf[c];
+            }
+            VDP_SET_ADDRESS_WRITE(vdpsrc);
+            for (int c=7; c>=0; --c) {
+                VDPWD = buf2[c];
+            }
+        }
+    }
 }
 
 // present one card
-void read1()
+void read1(const char *p)
 {
     int x,y,fl,a;
+    
+    // hide the old card
+    vdpmemset(gColor, 0, 4*1024);
+    vdpmemset(gImage+16*32, ' ', 8*32);
+    
+    // print the header
+    printf("\n%s\n", p);
+    
     fl=1;
     while(fl)
     {
@@ -368,31 +487,67 @@ void read1()
         }
     }
     picked[cnum++]=x;
+
+    drawCard(x);
+    
+    // get the text
     read(x);
-    sndcr();
-    rprint(cardn);
+    
+    // using printf here for tighter control of vertical spacing
+    printf("%s\n", cardn);
     if(y) {
-        rprint("This card is reversed.");
-        rprint(cardmr);
+        printf("This card is reversed.\n");
+        drawCardReverse();
+        printf("%s", cardmr);
     } else {
-        rprint(cardm);
+        printf("%s", cardm);
     }
-    sndcr();
-    getkey();
+    getkey(1);  // suppress --PRESS ANY KEY--
 }
 
 // as a test, dump all cards so formatting can be checked
 void readall() {
     int x,y,fl,a;
+    
+    set_bitmap(0);
+    nTextFlags = TEXT_WIDTH_32; // remove special purpose flags and make it dumb
+    VDP_SET_REGISTER(VDP_REG_COL, COLOR_DKBLUE);
+    // blank out the color and pattern tables
+    vdpmemset(gColor, 0, 6*1024);
+    vdpmemset(gPattern, 0, 6*1024);
+    // we need to force the character set into the third block    
+    gPattern+=0x1000;
+    charsetlc();
+    gPattern-=0x1000;
+    // set up bitmap on the top, text on the bottom
+    vdpwriteinc(gImage, 0, 512);
+    vdpmemset(gImage+512, ' ', 32*8);
+    // and give the text area some color
+    vdpmemset(gColor+4*1024, 0xf0, 2*1024);
+    
+    // and change the scroll function
+    scrn_scroll = scrn_scroll_last8;
+
     for (x=0; x<78; ++x) {
+        // hide the old card
+        vdpmemset(gColor, 0, 4*1024);
+        vdpmemset(gImage+16*32, ' ', 8*32);
+        
         read(x);
-        sndcr();
-        rprint(cardn);
-        rprint(cardm);
-        rprint("Reversed:");
-        rprint(cardmr);
-        sndcr();
-        getkey();
+
+        printf("\nThis card is visible.\nThis is line two.\n");
+        drawCard(x);
+        printf("%s\n",cardn);
+        printf("%s\n",cardm);
+        getkey(1);
+        
+        printf("\n\n\n\n\n\n\n\n");
+        drawCardReverse();
+        printf("This card is visible.\nThis is line two.\n");
+        printf("%s\n",cardn);
+        printf("Reversed:\n");
+        printf("%s", cardmr);
+        getkey(1);
     }
 }
 
@@ -402,191 +557,191 @@ void readall() {
 void dummyfunc() {
     __asm__ volatile(
         "\n"
-    "CARDFS text 'The Magician*Skill, dimplomacy, '\n\t"
+    "CARDFS text 'The Fool*Folly, mania, intoxication,\nextra'\n\t"
+    "text 'vagance, an '\n\t"
+    "text 'important\ndecision.*Negligence, absence,\nc'\n\t"
+    "text 'arelessness, vanity.*'\n\t"
+    "text 'The Magician*Skill, dimplomacy,\n'\n\t"
     "text 'self-confidence.*Disgrace, disquiet, inter'\n\t"
-    "text 'nal conflict.*'\n\t"
+    "text 'nal\nconflict.*'\n\t"
     "text 'The High Priestess*Secrets, mystery, '\n\t"
-    "text 'wisdom, science*Passion, ardour, conceit.*'\n\t"
-    "text 'The Empress*Fruitfulness, action, initiati'\n\t"
+    "text 'wisdom,\nscience*Passion, ardour, conceit.*'\n\t"
+    "text 'The Empress*Fruitfulness, action,\ninitiati'\n\t"
     "text 've.*Light, truth'\n\t"
-    "text 'understanding, public\nrejoicing.*'\n\t"
-    "text 'The Emperor*Stability, power, protection, '\n\t"
-    "text 'a\ngreat man.*'\n\t"
-    "text 'Benevolence, compassion, credit,\nimmaturit'\n\t"
+    "text 'understanding,\npublic rejoicing.*'\n\t"
+    "text 'The Emperor*Stability, power, protection,\n'\n\t"
+    "text 'a great man.*'\n\t"
+    "text 'Benevolence,compassion, credit,\nimmaturit'\n\t"
     "text 'y.*'\n\t"
     "text 'The Hierophant*Captivity, servitude, a fat'\n\t"
     "text 'her.*Society, '\n\t"
-    "text 'understanding, over-kindness,\nweakness.*'\n\t"
-    "text 'The Lovers*Attraction, love, beauty, trial'\n\t"
-    "text 's\novercome.*'\n\t"
+    "text 'understanding,\nover-kindness, weakness.*'\n\t"
+    "text 'The Lovers*Attraction, love, beauty,\ntrial'\n\t"
+    "text 's overcome.*'\n\t"
     "text 'Failure, foolish plans.*'\n\t"
     "text 'The Chariot*Providence, triumph, vengence.'\n\t"
     "text '*Riot, dispute, '\n\t"
-    "text 'litigation, defeat.*'\n\t"
+    "text 'litigation,\ndefeat.*'\n\t"
     "text 'Strength*Power, energy, courage.*Abuse of '\n\t"
-    "text 'power, weakness, '\n\t"
+    "text 'power, weakness,\n'\n\t"
     "text 'dischord.*'\n\t"
     "text 'The Hermit*Prudence, treason, corruption.*'\n\t"
-    "text 'Concealment, disguise, fear, paranoia.*'\n\t"
+    "text 'Concealment, disguise, fear,\nparanoia.*'\n\t"
     "text 'Wheel of Fortune*Destiny, good luck, succe'\n\t"
     "text 'ss.*'\n\t"
-    "text 'Abundance, bad luck, superfluity.*'\n\t"
+    "text 'Abundance, bad luck,\nsuperfluity.*'\n\t"
     "text 'Justice*Equity, rightness, fairness.*Law, '\n\t"
-    "text 'bigotry, excessive '\n\t"
+    "text 'bigotry, excessive\n'\n\t"
     "text 'severity.*'\n\t"
     "text 'The Hanged Man*Wisdom, trials, divination.'\n\t"
     "text '*Selfishness, '\n\t"
     "text 'peer pressure.*'\n\t"
-    "text 'Death*Change, new events replace old, end '\n\t"
-    "text 'of\nold ways.*'\n\t"
+    "text 'Death*Change, new events replace old,\nend '\n\t"
+    "text 'of old ways.*'\n\t"
     "text 'Inertia, stagnation, sleep.*'\n\t"
     "text 'Temperance*Economy, moderation, frugality,'\n\t"
     "text '\naccomodation.*'\n\t"
-    "text 'Religion, disunion, competing interests*'\n\t"
+    "text 'Religion, disunion, competing\ninterests*'\n\t"
     "text 'The Devil*Violence, extraordinary efforts,'\n\t"
-    "text ' force,\nreluctance '\n\t"
+    "text 'force, reluctance '\n\t"
     "text 'to change.*Evilness, weakness, pettiness.*'\n\t"
-    "text 'The Tower*Misery, distress, violent change'\n\t"
-    "text ',\ndisgrace.*'\n\t"
-    "text 'Oppression, imprisonment, tyranny.*'\n\t"
-    "text 'The Star*Hope, bright prospects, knowledge'\n\t"
+    "text 'The Tower*Misery, distress, violent\nchange'\n\t"
+    "text ', disgrace.*'\n\t"
+    "text 'Oppression, imprisonment,\ntyranny.*'\n\t"
+    "text 'The Star*Hope, bright prospects,\nknowledge'\n\t"
     "text '.*Arrogance, '\n\t"
-    "text 'haughtiness, impotence.*'\n\t"
-    "text 'The Moon*Hidden enemies, danger, darkness,'\n\t"
-    "text '\ndeception.*'\n\t"
-    "text 'Instability, inconsistency, some\ndeception'\n\t"
+    "text 'haughtiness,\nimpotence.*'\n\t"
+    "text 'The Moon*Hidden enemies, danger,\ndarkness,'\n\t"
+    "text ' deception.*'\n\t"
+    "text 'Instability, inconsistency,\nsome deception'\n\t"
     "text '.*'\n\t"
     "text 'The Sun*Material happiness, marriage,\ncont'\n\t"
     "text 'entment.*'\n\t"
     "text 'Happiness, contentment.*'\n\t"
     "text 'Judgement*Change of position, renewal,\nrew'\n\t"
     "text 'ard/punishment.*'\n\t"
-    "text 'Weakness, simplicity, deliberation.*'\n\t"
-    "text 'The Fool*Folly, mania, intoxication,\nextra'\n\t"
-    "text 'vagance, an '\n\t"
-    "text 'important decision.*Negligence, absence, c'\n\t"
-    "text 'arelessness,\nvanity.*'\n\t"
+    "text 'Weakness, simplicity,\ndeliberation.*'\n\t"
     "text 'The World*Success, a trip, a move.*Inertia'\n\t"
     "text ', stagnation, '\n\t"
     "text 'permanence.*'\n\t"
     "text 'King of Wands*A dark, friendly man, honest'\n\t"
-    "text ' and\nconscientious.*'\n\t"
-    "text 'Good, yet severe, austere and tolerant.*'\n\t"
+    "text '\nand conscientious.*'\n\t"
+    "text 'Good, yet severe, austere and\ntolerant.*'\n\t"
     "text 'Queen of Wands*A dark, friendly woman, cha'\n\t"
-    "text 'ste, loving,\nhonourab'\n\t"
+    "text 'ste, loving, honourab'\n\t"
     "text 'le.*Jealousy, deceit, infidelity.*'\n\t"
     "text 'Knight of Wands*A friendly young man, depa'\n\t"
-    "text 'rture,\nabsence, '\n\t"
-    "text 'moving.*Division, interruption, dischord.*'\n\t"
-    "text 'Page of Wands*A faithful young person, a l'\n\t"
-    "text 'over, an\nenvoy, news.*'\n\t"
-    "text 'Announcements, bad news, indecision and\nin'\n\t"
+    "text 'rture,absence, '\n\t"
+    "text 'moving.*Division,interruption, dischord.*'\n\t"
+    "text 'Page of Wands*A faithful young person, a\nl'\n\t"
+    "text 'over, an envoy, news.*'\n\t"
+    "text 'Announcements, bad news,\nindecision and in'\n\t"
     "text 'stability.*'\n\t"
-    "text 'Ten of Wands*Opression, disguise, bad tidi'\n\t"
-    "text 'ngs, loss\nof a lawsuit.*'\n\t"
-    "text 'Contrarities, difficulties, intrigues.*'\n\t"
-    "text 'Nine of Wands*Strong defense, delay, expec'\n\t"
-    "text 'tation of\na battle.*'\n\t"
+    "text 'Ten of Wands*Opression, disguise, bad\ntidi'\n\t"
+    "text 'ngs, loss of a lawsuit.*'\n\t"
+    "text 'Contrarities, difficulties,\nintrigues.*'\n\t"
+    "text 'Nine of Wands*Strong defense, delay,\nexpec'\n\t"
+    "text 'tation of a battle.*'\n\t"
     "text 'Obstacles, adversity, calamity.*'\n\t"
     "text 'Eight of Wands*Activity, swiftness, hope, '\n\t"
     "text 'love.*'\n\t"
-    "text 'Jealousy, disputes, bad conscience,\nquarre'\n\t"
+    "text 'Jealousy, disputes, bad\nconscience, quarre'\n\t"
     "text 'ls.*'\n\t"
     "text 'Seven of Wands*Valour, dicussion, negotiat'\n\t"
-    "text 'ions,\nsuccess.*'\n\t"
-    "text 'Perplexity, embarrassment, anxiety.*'\n\t"
+    "text 'ions,success.*'\n\t"
+    "text 'Perplexity, embarrassment,\nanxiety.*'\n\t"
     "text 'Six of Wands*Victory, great news.*Apprehen'\n\t"
-    "text 'sion, treachery, '\n\t"
-    "text 'disloyalty,\nfear of loss.*'\n\t"
-    "text 'Five of Wands*Imitation, the fight for mat'\n\t"
-    "text 'erial\nwealth.*'\n\t"
+    "text 'sion, treachery,\n'\n\t"
+    "text 'disloyalty, fear of loss.*'\n\t"
+    "text 'Five of Wands*Imitation, the fight for\nmat'\n\t"
+    "text 'erial wealth.*'\n\t"
     "text 'Litigation, disputes, trickery,\ncontradict'\n\t"
     "text 'ion.*'\n\t"
     "text 'Four of Wands*Harmony, prosperity, peace.*'\n\t"
     "text 'Prosperity, peace, beauty,\nembellishment.*'\n\t"
     "text 'Three of Wands*Established strength, comme'\n\t"
-    "text 'rce, trade,\nexisting '\n\t"
+    "text 'rce, trade, existing '\n\t"
     "text 'success.*End of troubles, suspension of\nad'\n\t"
     "text 'versity, hard work.*'\n\t"
-    "text 'Two of Wands*Unhappiness despite material '\n\t"
-    "text 'success\nand wealth.*'\n\t"
+    "text 'Two of Wands*Unhappiness despite material\n'\n\t"
+    "text 'success and wealth.*'\n\t"
     "text 'Surprise, wonder, fear.*'\n\t"
-    "text 'Ace of Wands*Creation, invention, a beginn'\n\t"
+    "text 'Ace of Wands*Creation, invention, a\nbeginn'\n\t"
     "text 'ing.*'\n\t"
-    "text 'A fall from power, ruin, clouded joy.*'\n\t"
+    "text 'A fall from power, ruin, cloudedjoy.*'\n\t"
     "text 'King of Cups*A fair, responsible man,\ncrea'\n\t"
     "text 'tive intelligence.*'\n\t"
-    "text 'A dishonest, double-dealing man,\ninjustice'\n\t"
+    "text 'A dishonest, double-dealing man,injustice'\n\t"
     "text ', vice, scandal.*'\n\t"
     "text 'Queen of Cups*A good, honest, devoted woma'\n\t"
-    "text 'n, wisdom,\nvirtue.*'\n\t"
-    "text 'Untrustworthy or perverse woman,\ndishonour'\n\t"
+    "text 'n,\nwisdom, virtue.*'\n\t"
+    "text 'Untrustworthy or perverse woman,dishonour'\n\t"
     "text ', depravity.*'\n\t"
     "text 'Knight of Cups*arrival of someone, maybe a'\n\t"
-    "text ' messenger,\na '\n\t"
+    "text '\nmessenger, a '\n\t"
     "text 'proposition or invitation.*Trickery, subtl'\n\t"
     "text 'ety, fraud.*'\n\t"
-    "text 'Page of Cups*A studious youth, news, medit'\n\t"
-    "text 'ation,\nbusiness.*'\n\t"
+    "text 'Page of Cups*A studious youth, news,\nmedit'\n\t"
+    "text 'ation, business.*'\n\t"
     "text 'Attachment, deception.*'\n\t"
-    "text 'Ten of Cups*Contentment, perfect repose, c'\n\t"
-    "text 'lear\nconscience.*'\n\t"
-    "text 'False heart, bad conscience, violence.*'\n\t"
-    "text 'Nine of Cups*Contentment, physical well-be'\n\t"
-    "text 'ing,\nvictory, '\n\t"
+    "text 'Ten of Cups*Contentment, perfect repose,\nc'\n\t"
+    "text 'lear conscience.*'\n\t"
+    "text 'False heart, bad conscience,\nviolence.*'\n\t"
+    "text 'Nine of Cups*Contentment, physical\nwell-be'\n\t"
+    "text 'ing, victory, '\n\t"
     "text 'satisfaction.*Loyalty, but including mista'\n\t"
-    "text 'kes or\nimperfections.*'\n\t"
-    "text 'Eight of Cups*Desertion of previous undert'\n\t"
+    "text 'kes\nor imperfections.*'\n\t"
+    "text 'Eight of Cups*Desertion of previous\nundert'\n\t"
     "text 'akings.*'\n\t"
     "text 'Great joy, happiness, feasting.*'\n\t"
     "text 'Seven of Cups*Division of concentration, t'\n\t"
-    "text 'oo many\nprojects are '\n\t"
-    "text 'being undertaken at once.*Desire, will, de'\n\t"
-    "text 'termination, a '\n\t"
+    "text 'oo\nmany projects are '\n\t"
+    "text 'being\nundertaken at once.*Desire, will, de'\n\t"
+    "text 'termination, a\n'\n\t"
     "text 'project.*'\n\t"
     "text 'Six of Cups*Past happiness, memories.*The '\n\t"
     "text 'future, renewal.*'\n\t"
-    "text 'Five of Cups*Loss, but something more rema'\n\t"
-    "text 'ins. Too\nmuch '\n\t"
-    "text 'concern over the loss while\nignoring what '\n\t"
+    "text 'Five of Cups*Loss,but something more rema'\n\t"
+    "text 'ins.Too much '\n\t"
+    "text 'concern over the loss\nwhile ignoring what '\n\t"
     "text 'is left.*'\n\t"
     "text 'News, alliances, false projects.*'\n\t"
-    "text 'Four of Cups*Weariness, disgust, dissatisf'\n\t"
-    "text 'action\nwith all that '\n\t"
+    "text 'Four of Cups*Weariness, disgust,\ndissatisf'\n\t"
+    "text 'action with all that'\n\t"
     "text 'is offered.*Novelty, new relations, new\nin'\n\t"
     "text 'structions.*'\n\t"
     "text 'Three of Cups*Good conclusion of a matter,'\n\t"
-    "text ' victory,\nhealing.*'\n\t"
+    "text '\nvictory, healing.*'\n\t"
     "text 'Achievement, end.*'\n\t"
     "text 'Two of Cups*Love, friendship, sympathy.*Fa'\n\t"
     "text 'lse love, folly, '\n\t"
-    "text 'a misunderstanding.*'\n\t"
+    "text 'a\nmisunderstanding.*'\n\t"
     "text 'Ace of Cups*True joy, abundance, holiness.'\n\t"
     "text '*False feelings, '\n\t"
-    "text 'instability, revolution*'\n\t"
+    "text 'instability,\nrevolution*'\n\t"
     "text 'King of Swords*Judgement, power, authority'\n\t"
-    "text ', law.*'\n\t"
+    "text ',\nlaw.*'\n\t"
     "text 'Cruelty, evil intentions.*'\n\t"
     "text 'Queen of Swords*Widowhood, absense, steril'\n\t"
     "text 'ity,\nseparation.*'\n\t"
     "text 'Malice, bigotry, deceit.*'\n\t"
     "text 'Knight of Swords*Skill, bravery in defense'\n\t"
-    "text ' or offense.*'\n\t"
+    "text ' or\noffense.*'\n\t"
     "text 'Incapacity, extravagance.*'\n\t"
     "text 'Page of Swords*Secrecy, spying, vigilance.'\n\t"
     "text '*Unprepared state, '\n\t"
-    "text 'hostile spying.*'\n\t"
-    "text 'Ten of Swords*Pain, sadness, desolation, r'\n\t"
-    "text 'uthless\nenemy.*'\n\t"
+    "text 'hostile\nspying.*'\n\t"
+    "text 'Ten of Swords*Pain, sadness, desolation,\nr'\n\t"
+    "text 'uthless enemy.*'\n\t"
     "text 'Temporary advantage, profit, or power.*'\n\t"
     "text 'Nine of Swords*Death, failure, deception, '\n\t"
-    "text 'dispair.*'\n\t"
+    "text '\ndespair.*'\n\t"
     "text 'Imprisonment, suspicion, shame.*'\n\t"
     "text 'Eight of Swords*Bad news, conflict, sickne'\n\t"
     "text 'ss.*Opposition, '\n\t"
-    "text 'accident, treachery,\nfatality.*'\n\t"
+    "text 'accident, treachery,fatality.*'\n\t"
     "text 'Seven of Swords*Lack of guard. Severe weak'\n\t"
-    "text 'ening of\nbattle '\n\t"
+    "text 'ening\nof battle '\n\t"
     "text 'readiness.*Good advice, instruction.*'\n\t"
     "text 'Six of Swords*Journey by water, a route,\nc'\n\t"
     "text 'ommissionary.*'\n\t"
@@ -595,27 +750,27 @@ void dummyfunc() {
     "text 's.*Distruction, '\n\t"
     "text 'dishonour, loss.*'\n\t"
     "text 'Four of Swords*Vigilance, solitude, retrea'\n\t"
-    "text 't, exile.*'\n\t"
-    "text 'Circumspection, economy, precaution.*'\n\t"
-    "text 'Three of Swords*Removal, absense, delay, d'\n\t"
+    "text 't,\nexile.*'\n\t"
+    "text 'Circumspection, economy,\nprecaution.*'\n\t"
+    "text 'Three of Swords*Removal, absense, delay,\nd'\n\t"
     "text 'ivision.*Error, '\n\t"
-    "text 'loss, distraction, confusion.*'\n\t"
+    "text 'loss, distraction,\nconfusion.*'\n\t"
     "text 'Two of Swords*Conformity, friendship, bala'\n\t"
-    "text 'nce of\npower.*'\n\t"
-    "text 'Imposture, falsehood, disloyalty.*'\n\t"
+    "text 'nce\nof power.*'\n\t"
+    "text 'Imposture, falsehood,\ndisloyalty.*'\n\t"
     "text 'Ace of Swords*Triumph, conquest, great for'\n\t"
     "text 'ce.*Conquest, or '\n\t"
-    "text 'great force, with negative\nresults.*'\n\t"
+    "text 'great force, with\nnegative results.*'\n\t"
     "text 'King of Pentacles*Courage, lethargy, valou'\n\t"
     "text 'r.*Vice, weak'\n\t"
-    "text 'ness, ugliness, corruption.*'\n\t"
+    "text 'ness, ugliness,\ncorruption.*'\n\t"
     "text 'Queen of Pentacles*Generosity, magnificenc'\n\t"
-    "text 'e, liberty.*'\n\t"
-    "text 'Evil, suspicion, suspense, fear,\nmistrust.'\n\t"
+    "text 'e,\nliberty.*'\n\t"
+    "text 'Evil, suspicion, suspense, fear,mistrust.'\n\t"
     "text '*'\n\t"
-    "text 'Knight of Pentacles*Utility, interest, res'\n\t"
+    "text 'Knight of Pentacles*Utility, interest,\nres'\n\t"
     "text 'ponsibility.*'\n\t"
-    "text 'Inertia, discouragement, carelessness.*'\n\t"
+    "text 'Inertia, discouragement,\ncarelessness.*'\n\t"
     "text 'Page of Pentacles*Application, study, refl'\n\t"
     "text 'ection.*'\n\t"
     "text 'Prodigality, liberality, luxury.*'\n\t"
@@ -623,34 +778,34 @@ void dummyfunc() {
     "text 'ers.*Chance, loss,'\n\t"
     "text ' robbery.*'\n\t"
     "text 'Nine of Pentacles*Prudence, safety, succes'\n\t"
-    "text 's, discernment.*'\n\t"
+    "text 's,\ndiscernment.*'\n\t"
     "text 'Roguery, deception, bad faith.*'\n\t"
     "text 'Eight of Pentacles*Employment, craftsmansh'\n\t"
-    "text 'ip, skill in\nbusiness.*'\n\t"
+    "text 'ip,\nskill in business.*'\n\t"
     "text 'Voided ambition, exaction.*'\n\t"
     "text 'Seven of Pentacles*Money, business, barter'\n\t"
     "text '.*Anxiety about '\n\t"
     "text 'money.*'\n\t"
     "text 'Six of Pentacles*Gifts, gratification, att'\n\t"
     "text 'ention.*Desire, envy,'\n\t"
-    "text ' jealousy, illusion.*'\n\t"
+    "text 'jealousy, illusion.*'\n\t"
     "text 'Five of Pentacles*Material problems, desti'\n\t"
     "text 'tution.*Disorder, '\n\t"
     "text 'chaos, dischrord.*'\n\t"
     "text 'Four of Pentacles*Surety of possessions, h'\n\t"
-    "text 'olding on to\nwhat '\n\t"
-    "text 'one has, gifts, legacy or\ninheritance.*Sus'\n\t"
+    "text 'olding\non to what '\n\t"
+    "text 'one has, gifts,\nlegacy or inheritance.*Sus'\n\t"
     "text 'pense, delay, '\n\t"
     "text 'opposition.*'\n\t"
     "text 'Three of Pentacles*Trade, skilled labour, '\n\t"
     "text 'reknown, glory.*'\n\t"
     "text 'Mediocrity, pettiness, weakness.*'\n\t"
-    "text 'Two of Pentacles*Written messages, happine'\n\t"
+    "text 'Two of Pentacles*Written messages,\nhappine'\n\t"
     "text 'ss.*'\n\t"
-    "text 'Forced happiness, written exchange.*'\n\t"
+    "text 'Forced happiness, written\nexchange.*'\n\t"
     "text 'Ace of Pentacles*Perfect contentment, ecst'\n\t"
     "text 'asy,\nintelligence, '\n\t"
-    "text 'wealth.*Evil side of wealth, bad intellige'\n\t"
+    "text 'wealth.*Evil side of wealth, bad\nintellige'\n\t"
     "text 'nce.*'\n\t"
     "text '******'\n\t"
     );

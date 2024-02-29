@@ -1,0 +1,71 @@
+    {
+        // tarot card process
+        FILE *fp,*fp2;
+        fp=fopen("D:\\work\\tarot\\cardpics\\cardinc.h", "w");
+        fprintf(fp, "#define BIN2INC_HEADER_ONLY\n");
+        for (int c=1; c<79; ++c) {
+            fprintf(fp, "#include \"CARD%02d.rlec.c\"\n", c);
+            fprintf(fp, "#include \"CARD%02d.rlep.c\"\n", c);
+        }
+        fprintf(fp, "\nstruct _CARDP {\n    const unsigned char *p;\n    unsigned int bank;\n};\n");
+        fclose(fp);
+
+        const int maxBytes = 8146;
+        fp=fopen("D:\\work\\tarot\\cardpics\\cardinc.c", "w");
+        fp2=fopen("D:\\work\\tarot\\cardpics\\cardlink.ld", "w");
+        int bank=3;
+        int left=maxBytes;
+        int adr = 0x602e;
+        
+        // create a list of the card order
+        list<int> cardorder;
+        for (int c=1; c<=22; ++c) cardorder.push_back(c);
+        for (int c=36; c>=23; --c) cardorder.push_back(c);
+        for (int c=50; c>=37; --c) cardorder.push_back(c);
+        for (int c=64; c>=51; --c) cardorder.push_back(c);
+        for (int c=78; c>=65; --c) cardorder.push_back(c);
+
+        fprintf(fp,"struct _CARDP cardTable[] = {\n");
+        fprintf(fp2,"bank%d :\n{\n", bank);
+        for (int c : cardorder) {
+            char buf[128];
+            sprintf(buf, "D:\\work\\tarot\\cardpics\\CARD%02d.rlec", c);
+            FILE *ftmp = fopen(buf, "rb");
+            fseek(ftmp, 0, SEEK_END);
+            int sz = ftell(ftmp);
+            fclose(ftmp);
+            if (sz>left) {
+                fprintf(fp2, "    PROVIDE(ebank%d = .);\n", bank);
+                fprintf(fp2, "} > CART%d AT> FLASH\n\n", bank);
+                ++bank;
+                left = maxBytes;
+                adr = 0x602e;
+                fprintf(fp2,"bank%d :\n{\n", bank);
+            }
+            fprintf(fp2, "    CARD%02d.rlec.o(.text .rodata)\n", c);
+            fprintf(fp, "    { 0x%04X,0x%04X },\t// CARD%02d C\n", adr, 0x6000+bank*2, c);
+            left -= sz;
+            adr += sz;
+        
+            sprintf(buf, "D:\\work\\tarot\\cardpics\\CARD%02d.rlep", c);
+            ftmp = fopen(buf, "rb");
+            fseek(ftmp, 0, SEEK_END);
+            sz = ftell(ftmp);
+            fclose(ftmp);
+            if (sz>left) {
+                fprintf(fp2, "    PROVIDE(ebank%d = .);\n", bank);
+                fprintf(fp2, "} > CART%d AT> FLASH\n\n", bank);
+                ++bank;
+                left = maxBytes;
+                adr = 0x602e;
+                fprintf(fp2,"bank%d :\n{\n", bank);
+            }
+            fprintf(fp2, "    CARD%02d.rlep.o(.text .rodata)\n", c);
+            fprintf(fp, "    { 0x%04X,0x%04X },\t// CARD%02d P\n", adr, 0x6000+bank*2, c);
+            left -= sz;
+            adr += sz;
+        }
+
+        fclose(fp2);
+        fclose(fp);
+    }
