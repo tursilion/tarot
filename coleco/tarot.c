@@ -2,11 +2,6 @@
 /* version 1.1 - ported to libti99 in 2024 */
 // In retrospect it would have been faster to just compile the PC version...
 // Also updated to remove the TI asm and work on ColecoVision
-// there are no graphics... although these days there could be, ROMs are big enough
-
-#include <vdp.h>
-#include <kscan.h>
-#include <string.h>
 
 char cardn[40],cardm[160],cardmr[160];
 char name[80];
@@ -14,204 +9,210 @@ char as[80];
 int a,b,c,datapt;
 int picked[11],cnum;
 
-int main();
-int getyn();
-void getkey();
-void docard();
-int get12(int x);
-void getsig();
+#include <vdp.h>
+#include <kscan.h>
+#include <string.h>
+#include <system.h>
+#include "cardinc.h"
+ 
+int main(void);
+unsigned char getyn(void);
+void getkey(unsigned char suppress);
+void docard(void);
+unsigned char get12(unsigned char x);
+void getsig(void);
 void read(int x);
-void readem();
-void read1();
-void readall();
+void readem(void);
+void read1(const char *p);
+//void readall(void);
 
 // the actual card data.
 const char CARDFS[] = {
-    "The Magician*Skill, dimplomacy, "
+    "The Fool*Folly, mania, intoxication,\nextra"
+    "vagance, an "
+    "important\ndecision.*Negligence, absence,\nc"
+    "arelessness, vanity.*"
+    "The Magician*Skill, dimplomacy,\n"
     "self-confidence.*Disgrace, disquiet, inter"
-    "nal conflict.*"
+    "nal\nconflict.*"
     "The High Priestess*Secrets, mystery, "
-    "wisdom, science*Passion, ardour, conceit.*"
-    "The Empress*Fruitfulness, action, initiati"
+    "wisdom,\nscience*Passion, ardour, conceit.*"
+    "The Empress*Fruitfulness, action,\ninitiati"
     "ve.*Light, truth"
-    "understanding, public\nrejoicing.*"
-    "The Emperor*Stability, power, protection, "
-    "a\ngreat man.*"
-    "Benevolence, compassion, credit,\nimmaturit"
+    "understanding,\npublic rejoicing.*"
+    "The Emperor*Stability, power, protection,\n"
+    "a great man.*"
+    "Benevolence,compassion, credit,\nimmaturit"
     "y.*"
     "The Hierophant*Captivity, servitude, a fat"
     "her.*Society, "
-    "understanding, over-kindness,\nweakness.*"
-    "The Lovers*Attraction, love, beauty, trial"
-    "s\novercome.*"
+    "understanding,\nover-kindness, weakness.*"
+    "The Lovers*Attraction, love, beauty,\ntrial"
+    "s overcome.*"
     "Failure, foolish plans.*"
     "The Chariot*Providence, triumph, vengence."
     "*Riot, dispute, "
-    "litigation, defeat.*"
+    "litigation,\ndefeat.*"
     "Strength*Power, energy, courage.*Abuse of "
-    "power, weakness, "
+    "power, weakness,\n"
     "dischord.*"
     "The Hermit*Prudence, treason, corruption.*"
-    "Concealment, disguise, fear, paranoia.*"
+    "Concealment, disguise, fear,\nparanoia.*"
     "Wheel of Fortune*Destiny, good luck, succe"
     "ss.*"
-    "Abundance, bad luck, superfluity.*"
+    "Abundance, bad luck,\nsuperfluity.*"
     "Justice*Equity, rightness, fairness.*Law, "
-    "bigotry, excessive "
+    "bigotry, excessive\n"
     "severity.*"
     "The Hanged Man*Wisdom, trials, divination."
     "*Selfishness, "
     "peer pressure.*"
-    "Death*Change, new events replace old, end "
-    "of\nold ways.*"
+    "Death*Change, new events replace old,\nend "
+    "of old ways.*"
     "Inertia, stagnation, sleep.*"
     "Temperance*Economy, moderation, frugality,"
     "\naccomodation.*"
-    "Religion, disunion, competing interests*"
+    "Religion, disunion, competing\ninterests*"
     "The Devil*Violence, extraordinary efforts,"
-    " force,\nreluctance "
+    "force, reluctance "
     "to change.*Evilness, weakness, pettiness.*"
-    "The Tower*Misery, distress, violent change"
-    ",\ndisgrace.*"
-    "Oppression, imprisonment, tyranny.*"
-    "The Star*Hope, bright prospects, knowledge"
+    "The Tower*Misery, distress, violent\nchange"
+    ", disgrace.*"
+    "Oppression, imprisonment,\ntyranny.*"
+    "The Star*Hope, bright prospects,\nknowledge"
     ".*Arrogance, "
-    "haughtiness, impotence.*"
-    "The Moon*Hidden enemies, danger, darkness,"
-    "\ndeception.*"
-    "Instability, inconsistency, some\ndeception"
+    "haughtiness,\nimpotence.*"
+    "The Moon*Hidden enemies, danger,\ndarkness,"
+    " deception.*"
+    "Instability, inconsistency,\nsome deception"
     ".*"
     "The Sun*Material happiness, marriage,\ncont"
     "entment.*"
     "Happiness, contentment.*"
     "Judgement*Change of position, renewal,\nrew"
     "ard/punishment.*"
-    "Weakness, simplicity, deliberation.*"
-    "The Fool*Folly, mania, intoxication,\nextra"
-    "vagance, an "
-    "important decision.*Negligence, absence, c"
-    "arelessness,\nvanity.*"
+    "Weakness, simplicity,\ndeliberation.*"
     "The World*Success, a trip, a move.*Inertia"
     ", stagnation, "
     "permanence.*"
     "King of Wands*A dark, friendly man, honest"
-    " and\nconscientious.*"
-    "Good, yet severe, austere and tolerant.*"
+    "\nand conscientious.*"
+    "Good, yet severe, austere and\ntolerant.*"
     "Queen of Wands*A dark, friendly woman, cha"
-    "ste, loving,\nhonourab"
+    "ste, loving, honourab"
     "le.*Jealousy, deceit, infidelity.*"
     "Knight of Wands*A friendly young man, depa"
-    "rture,\nabsence, "
-    "moving.*Division, interruption, dischord.*"
-    "Page of Wands*A faithful young person, a l"
-    "over, an\nenvoy, news.*"
-    "Announcements, bad news, indecision and\nin"
+    "rture,absence, "
+    "moving.*Division,interruption, dischord.*"
+    "Page of Wands*A faithful young person, a\nl"
+    "over, an envoy, news.*"
+    "Announcements, bad news,\nindecision and in"
     "stability.*"
-    "Ten of Wands*Opression, disguise, bad tidi"
-    "ngs, loss\nof a lawsuit.*"
-    "Contrarities, difficulties, intrigues.*"
-    "Nine of Wands*Strong defense, delay, expec"
-    "tation of\na battle.*"
+    "Ten of Wands*Opression, disguise, bad\ntidi"
+    "ngs, loss of a lawsuit.*"
+    "Contrarities, difficulties,\nintrigues.*"
+    "Nine of Wands*Strong defense, delay,\nexpec"
+    "tation of a battle.*"
     "Obstacles, adversity, calamity.*"
     "Eight of Wands*Activity, swiftness, hope, "
     "love.*"
-    "Jealousy, disputes, bad conscience,\nquarre"
+    "Jealousy, disputes, bad\nconscience, quarre"
     "ls.*"
     "Seven of Wands*Valour, dicussion, negotiat"
-    "ions,\nsuccess.*"
-    "Perplexity, embarrassment, anxiety.*"
+    "ions,success.*"
+    "Perplexity, embarrassment,\nanxiety.*"
     "Six of Wands*Victory, great news.*Apprehen"
-    "sion, treachery, "
-    "disloyalty,\nfear of loss.*"
-    "Five of Wands*Imitation, the fight for mat"
-    "erial\nwealth.*"
+    "sion, treachery,\n"
+    "disloyalty, fear of loss.*"
+    "Five of Wands*Imitation, the fight for\nmat"
+    "erial wealth.*"
     "Litigation, disputes, trickery,\ncontradict"
     "ion.*"
     "Four of Wands*Harmony, prosperity, peace.*"
     "Prosperity, peace, beauty,\nembellishment.*"
     "Three of Wands*Established strength, comme"
-    "rce, trade,\nexisting "
+    "rce, trade, existing "
     "success.*End of troubles, suspension of\nad"
     "versity, hard work.*"
-    "Two of Wands*Unhappiness despite material "
-    "success\nand wealth.*"
+    "Two of Wands*Unhappiness despite material\n"
+    "success and wealth.*"
     "Surprise, wonder, fear.*"
-    "Ace of Wands*Creation, invention, a beginn"
+    "Ace of Wands*Creation, invention, a\nbeginn"
     "ing.*"
-    "A fall from power, ruin, clouded joy.*"
+    "A fall from power, ruin, cloudedjoy.*"
     "King of Cups*A fair, responsible man,\ncrea"
     "tive intelligence.*"
-    "A dishonest, double-dealing man,\ninjustice"
+    "A dishonest, double-dealing man,injustice"
     ", vice, scandal.*"
     "Queen of Cups*A good, honest, devoted woma"
-    "n, wisdom,\nvirtue.*"
-    "Untrustworthy or perverse woman,\ndishonour"
+    "n,\nwisdom, virtue.*"
+    "Untrustworthy or perverse woman,dishonour"
     ", depravity.*"
     "Knight of Cups*arrival of someone, maybe a"
-    " messenger,\na "
+    "\nmessenger, a "
     "proposition or invitation.*Trickery, subtl"
     "ety, fraud.*"
-    "Page of Cups*A studious youth, news, medit"
-    "ation,\nbusiness.*"
+    "Page of Cups*A studious youth, news,\nmedit"
+    "ation, business.*"
     "Attachment, deception.*"
-    "Ten of Cups*Contentment, perfect repose, c"
-    "lear\nconscience.*"
-    "False heart, bad conscience, violence.*"
-    "Nine of Cups*Contentment, physical well-be"
-    "ing,\nvictory, "
+    "Ten of Cups*Contentment, perfect repose,\nc"
+    "lear conscience.*"
+    "False heart, bad conscience,\nviolence.*"
+    "Nine of Cups*Contentment, physical\nwell-be"
+    "ing, victory, "
     "satisfaction.*Loyalty, but including mista"
-    "kes or\nimperfections.*"
-    "Eight of Cups*Desertion of previous undert"
+    "kes\nor imperfections.*"
+    "Eight of Cups*Desertion of previous\nundert"
     "akings.*"
     "Great joy, happiness, feasting.*"
     "Seven of Cups*Division of concentration, t"
-    "oo many\nprojects are "
-    "being undertaken at once.*Desire, will, de"
-    "termination, a "
+    "oo\nmany projects are "
+    "being\nundertaken at once.*Desire, will, de"
+    "termination, a\n"
     "project.*"
     "Six of Cups*Past happiness, memories.*The "
     "future, renewal.*"
-    "Five of Cups*Loss, but something more rema"
-    "ins. Too\nmuch "
-    "concern over the loss while\nignoring what "
+    "Five of Cups*Loss,but something more rema"
+    "ins.Too much "
+    "concern over the loss\nwhile ignoring what "
     "is left.*"
     "News, alliances, false projects.*"
-    "Four of Cups*Weariness, disgust, dissatisf"
-    "action\nwith all that "
+    "Four of Cups*Weariness, disgust,\ndissatisf"
+    "action with all that"
     "is offered.*Novelty, new relations, new\nin"
     "structions.*"
     "Three of Cups*Good conclusion of a matter,"
-    " victory,\nhealing.*"
+    "\nvictory, healing.*"
     "Achievement, end.*"
     "Two of Cups*Love, friendship, sympathy.*Fa"
     "lse love, folly, "
-    "a misunderstanding.*"
+    "a\nmisunderstanding.*"
     "Ace of Cups*True joy, abundance, holiness."
     "*False feelings, "
-    "instability, revolution*"
+    "instability,\nrevolution*"
     "King of Swords*Judgement, power, authority"
-    ", law.*"
+    ",\nlaw.*"
     "Cruelty, evil intentions.*"
     "Queen of Swords*Widowhood, absense, steril"
     "ity,\nseparation.*"
     "Malice, bigotry, deceit.*"
     "Knight of Swords*Skill, bravery in defense"
-    " or offense.*"
+    " or\noffense.*"
     "Incapacity, extravagance.*"
     "Page of Swords*Secrecy, spying, vigilance."
     "*Unprepared state, "
-    "hostile spying.*"
-    "Ten of Swords*Pain, sadness, desolation, r"
-    "uthless\nenemy.*"
+    "hostile\nspying.*"
+    "Ten of Swords*Pain, sadness, desolation,\nr"
+    "uthless enemy.*"
     "Temporary advantage, profit, or power.*"
     "Nine of Swords*Death, failure, deception, "
-    "dispair.*"
+    "\ndespair.*"
     "Imprisonment, suspicion, shame.*"
     "Eight of Swords*Bad news, conflict, sickne"
     "ss.*Opposition, "
-    "accident, treachery,\nfatality.*"
+    "accident, treachery,fatality.*"
     "Seven of Swords*Lack of guard. Severe weak"
-    "ening of\nbattle "
+    "ening\nof battle "
     "readiness.*Good advice, instruction.*"
     "Six of Swords*Journey by water, a route,\nc"
     "ommissionary.*"
@@ -220,27 +221,27 @@ const char CARDFS[] = {
     "s.*Distruction, "
     "dishonour, loss.*"
     "Four of Swords*Vigilance, solitude, retrea"
-    "t, exile.*"
-    "Circumspection, economy, precaution.*"
-    "Three of Swords*Removal, absense, delay, d"
+    "t,\nexile.*"
+    "Circumspection, economy,\nprecaution.*"
+    "Three of Swords*Removal, absense, delay,\nd"
     "ivision.*Error, "
-    "loss, distraction, confusion.*"
+    "loss, distraction,\nconfusion.*"
     "Two of Swords*Conformity, friendship, bala"
-    "nce of\npower.*"
-    "Imposture, falsehood, disloyalty.*"
+    "nce\nof power.*"
+    "Imposture, falsehood,\ndisloyalty.*"
     "Ace of Swords*Triumph, conquest, great for"
     "ce.*Conquest, or "
-    "great force, with negative\nresults.*"
+    "great force, with\nnegative results.*"
     "King of Pentacles*Courage, lethargy, valou"
     "r.*Vice, weak"
-    "ness, ugliness, corruption.*"
+    "ness, ugliness,\ncorruption.*"
     "Queen of Pentacles*Generosity, magnificenc"
-    "e, liberty.*"
-    "Evil, suspicion, suspense, fear,\nmistrust."
+    "e,\nliberty.*"
+    "Evil, suspicion, suspense, fear,mistrust."
     "*"
-    "Knight of Pentacles*Utility, interest, res"
+    "Knight of Pentacles*Utility, interest,\nres"
     "ponsibility.*"
-    "Inertia, discouragement, carelessness.*"
+    "Inertia, discouragement,\ncarelessness.*"
     "Page of Pentacles*Application, study, refl"
     "ection.*"
     "Prodigality, liberality, luxury.*"
@@ -248,34 +249,34 @@ const char CARDFS[] = {
     "ers.*Chance, loss,"
     " robbery.*"
     "Nine of Pentacles*Prudence, safety, succes"
-    "s, discernment.*"
+    "s,\ndiscernment.*"
     "Roguery, deception, bad faith.*"
     "Eight of Pentacles*Employment, craftsmansh"
-    "ip, skill in\nbusiness.*"
+    "ip,\nskill in business.*"
     "Voided ambition, exaction.*"
     "Seven of Pentacles*Money, business, barter"
     ".*Anxiety about "
     "money.*"
     "Six of Pentacles*Gifts, gratification, att"
     "ention.*Desire, envy,"
-    " jealousy, illusion.*"
+    "jealousy, illusion.*"
     "Five of Pentacles*Material problems, desti"
     "tution.*Disorder, "
     "chaos, dischrord.*"
     "Four of Pentacles*Surety of possessions, h"
-    "olding on to\nwhat "
-    "one has, gifts, legacy or\ninheritance.*Sus"
+    "olding\non to what "
+    "one has, gifts,\nlegacy or inheritance.*Sus"
     "pense, delay, "
     "opposition.*"
     "Three of Pentacles*Trade, skilled labour, "
     "reknown, glory.*"
     "Mediocrity, pettiness, weakness.*"
-    "Two of Pentacles*Written messages, happine"
+    "Two of Pentacles*Written messages,\nhappine"
     "ss.*"
-    "Forced happiness, written exchange.*"
+    "Forced happiness, written\nexchange.*"
     "Ace of Pentacles*Perfect contentment, ecst"
     "asy,\nintelligence, "
-    "wealth.*Evil side of wealth, bad intellige"
+    "wealth.*Evil side of wealth, bad\nintellige"
     "nce.*"
     "******"
 };
@@ -336,14 +337,53 @@ void random() {
     rndnum();
 }
 // return a random number with a cap
-unsigned int rnd(unsigned int max) {
+unsigned int rnd(unsigned int max) { 
     return rndnum() % max;
+}
+
+// graphics
+void RLEUnpack(unsigned int p, const unsigned char *buf, unsigned int nMax) {
+	unsigned int z;
+	unsigned int cnt;
+
+	cnt = nMax;
+	VDP_SET_ADDRESS_WRITE(p);
+	while (cnt > 0) {
+		z=*buf;
+		if (z&0x80) {
+			// run of byte
+			buf++;
+			z&=0x7f;
+			if (z>cnt) z=cnt;
+			raw_vdpmemset(*buf, z);
+			buf++;
+		} else {
+			// sequence of data
+			buf++;
+			if (z>cnt) z=cnt;
+			raw_vdpmemcpy(buf, z);
+			buf+=z; // this will be wrong if we hit the limit, but we won't need it again
+		}
+		cnt-=z;
+	}
 }
 
 // BBS replacements
 #define rprint(p) printf("%s\n",p)
 #define sndcr() putchar('\n')
 #define rinput(x) gets(x, 80)
+
+// scroll only the bottom 8 lines for bitmap split screen
+void scrn_scroll_last8() {
+	// hacky, slow, but functional scroll that takes minimal memory
+	unsigned char x[4];		// 4 byte buffer to speed it up
+	int nLine = nTextEnd-nTextRow+1;    // size of one line
+	for (int adr=nLine*17+gImage; adr<nTextEnd+gImage; adr+=4) {
+		vdpmemread(adr, x, 4);
+		vdpmemcpy(adr-nLine, x, 4);
+	}
+	vdpmemset(nTextRow+gImage, ' ', nLine);	// clear the last line
+}
 
 // main code
 int main()
@@ -365,17 +405,17 @@ int main()
 //    strcpy(as,"Greetings!");
 //    strcat(as,name);
 //    rprint(as);
-    rprint("Greetings!\n");
-    sndcr();
+//    sndcr();
+    printf("Greetings!\n\n");
 
     // secret test mode
-    kscanfast(0);
-    if (KSCAN_KEY == ' ') {
-        readall();
-    }
+//    kscanfast(0);
+ //   if (KSCAN_KEY == ' ') {
+ //       readall();
+ //   }
 
-    rprint("I am Collee-Koe, the mystical sayer\nof sooth.");
-    sndcr();
+    rprint("I am Collee-Koe, the mystical\nsayer of sooth.\n");
+    //sndcr();
     rprint("Would you like me to tell you what the");
     rprint("cards have in store for you?\n(press 1(yes) or 0(no))");
     c=getyn();
@@ -387,14 +427,19 @@ int main()
 
 //    strcpy(as,"DSK5.DOR");
 //    ea5ld();
-    getkey();
+    getkey(0);
+    
+    // before we return, there's a bug in the crt0 packer and only page 0 has the reboot
+    // (though this probably doesn't affect the Coleco version)
+    exit();
+    
     return 0;
 }
 
 // return Y or N only
-int getyn()
+unsigned char getyn()
 {
-    int c;
+    unsigned char c;
     c=0;
     while((c!='0')&&(c!='1'))
     {
@@ -405,9 +450,11 @@ int getyn()
 }
 
 // wait for a keypress
-void getkey()
+void getkey(unsigned char suppress)
 {
-    rprint("---Press a key---");
+    if (!suppress) {
+        rprint("---Press a key---");
+    }
     do {
         kscanfast(0);
     } while (KSCAN_KEY == 0xff);
@@ -416,8 +463,8 @@ void getkey()
 // do the card reading
 void docard()
 {
-    sndcr();
-    rprint("Would you like a brief explanation?(1/0)");
+    //sndcr();
+    rprint("\nWould you like a brief explanation?(1/0)");
     c=getyn();
     sndcr();
     if(c=='1')
@@ -428,8 +475,8 @@ void docard()
         rprint("coloured cards with divinitory meanings");
         rprint("hidden in the pictures. The deck is");
         rprint("similar to a regular playing deck,");
-        rprint("but larger.");
-        sndcr();
+        rprint("but larger.\n");
+        //sndcr();
         rprint("There are two parts, called 'Arcanas'.");
         rprint("The 'Major Arcana' contains the picture");
         rprint("cards. These cards are all independant");
@@ -439,25 +486,26 @@ void docard()
         rprint("The 'Minor Arcana' has four suits");
         rprint("(Swords, Wands, Cups and Pentacles),");
         rprint("each with 14 cards (A-10, Page, Knight,");
-        rprint("Queen and King).");
-        sndcr();
+        rprint("Queen and King).\n");
+        //sndcr();
         rprint("The cards are laid out and interpreted");
         rprint("by where and how they lay. This program");
         rprint("will take care of interpretation.");
-        getkey();
+        getkey(0);
         sndcr();
         rprint("A computer can only give general");
         rprint("meanings. Not all the meanings given");
         rprint("necessarily apply. You must decide for");
         rprint("yourself what the cards are trying");
         rprint("to tell you.");
-        getkey();
+        getkey(0);
     }
     random();
     getsig();
     sndcr();
-    //      1234567890123456789012345678901234567890
-    rprint("Move the joystick while shuffling,\nto better influence the cards.");
+    //      12345678901234567890123456789012
+    rprint("Move the joystick while\nshuffling, to better influence\nthe cards.");
+    while ((KSCAN_JOYX==0)&&(KSCAN_JOYY==0)) { joystfast(KSCAN_MODE_LEFT); }
     strcpy(as,"help the user solve their question");
     //rinput(as);
     c=0;
@@ -474,7 +522,7 @@ void docard()
 }
 
 // get a number from 1-x
-int get12(int x)
+unsigned char get12(unsigned char x)
 {
     int c;
     c=0;
@@ -488,7 +536,7 @@ int get12(int x)
 // ask the user for their significator
 void getsig()
 {
-    int a1,a2,a3;
+    unsigned char a1,a2,a3;
     sndcr();
     rprint("First we must choose a significator,\na card to represent you.");
     sndcr();
@@ -522,8 +570,8 @@ void getsig()
 //    rprint("Your significator is ");
 //    crlf=1;
 //    rprint(cardn);
-    printf("Your significator is %s\n", cardn);
-    sndcr();
+    printf("Your significator is %s\n\n", cardn);
+    //sndcr();
     cnum=1;
 }
 
@@ -535,7 +583,7 @@ void read(int x)
     const unsigned char *p;
     
     p = CARDFS;
-    for(int a=0; a<=x; a++) {
+    for(unsigned char a=0; a<=x; a++) {
         // copy one card index
         
         // name
@@ -567,42 +615,114 @@ void read(int x)
 // do the full reading
 void readem()
 {
-    sndcr();
-    //      1234567890123456789012345678901234567890
-    rprint("This card crosses you.. it is your\ncurrent main obstacle.");
-    read1();
-    //      1234567890123456789012345678901234567890
-    rprint("This is beneath you.. it is your\nfoundation in the matter.");
-    read1();
-    //      1234567890123456789012345678901234567890
-    rprint("This is above you.. it is a goal\nof sorts.");
-    read1();
-    //      1234567890123456789012345678901234567890
-    rprint("This is behind you.. recent\npast events.");
-    read1();
-    //      1234567890123456789012345678901234567890
-    rprint("This is before you.. soon to occur.");
-    read1();
-    //      1234567890123456789012345678901234567890
-    rprint("This is your attitude/relationship\ntowards the matter.");
-    read1();
-    //      1234567890123456789012345678901234567890
-    rprint("This is your home environment, people\nand events around you.");
-    read1();
-    //      1234567890123456789012345678901234567890
-    rprint("This card represents your hopes and\nfears.");
-    read1();
-    //      1234567890123456789012345678901234567890
-    rprint("This is the probable outcome, if\nnothing is changed.");
-    read1();
-    //      1234567890123456789012345678901234567890
-    rprint("That is all. Thank you for visiting me..");
+    set_bitmap(0);
+    nTextFlags = TEXT_WIDTH_32; // remove special purpose flags and make it dumb
+    VDP_SET_REGISTER(VDP_REG_COL, COLOR_DKBLUE);
+    // blank out the color and pattern tables
+    vdpmemset(gColor, 0, 6*1024);
+    vdpmemset(gPattern, 0, 6*1024);
+    // we need to force the character set into the third block    
+    gPattern+=0x1000;
+    charsetlc();
+    gPattern-=0x1000;
+    // set up bitmap on the top, text on the bottom
+    vdpwriteinc(gImage, 0, 512);
+    vdpmemset(gImage+512, ' ', 32*8);
+    // and give the text area some color
+    vdpmemset(gColor+4*1024, 0xf0, 2*1024);
+    
+    // and change the scroll function
+    scrn_scroll = scrn_scroll_last8;
+
+    //sndcr();
+    //      12345678901234567890123456789012
+    read1("\nThis card crosses you.. it is\nyour current main obstacle.");
+    //      12345678901234567890123456789012
+    read1("This is beneath you.. it is yourfoundation in the matter.");
+    //      12345678901234567890123456789012
+    read1("This is above you.. it is a goalof sorts.");
+    //      12345678901234567890123456789012
+    read1("This is behind you.. recent\npast events.");
+    //      12345678901234567890123456789012
+    read1("This is before you.. soon to\noccur.");
+    //      12345678901234567890123456789012
+    read1("This is your attitude/relation-\nship towards the matter.");
+    //      12345678901234567890123456789012
+    read1("This is your home environment,\npeople and events around you.");
+    //      12345678901234567890123456789012
+    read1("This card represents your hopes\nand fears.");
+    //      12345678901234567890123456789012
+    read1("This is the probable outcome, ifnothing is changed.");
+    //      12345678901234567890123456789012
+
+    // hide the old card
+    vdpmemset(gColor, 0, 4*1024);
+    vdpmemset(gImage+16*32, ' ', 8*32);
+    rprint("\nThat is all.\nThank you for visiting me..");
+}
+
+void drawCard(int x) {
+    volatile unsigned char y;
+    // display the card. cardTable is P, then C ** BACKWARDS FROM TI **
+    y=*((volatile unsigned char*)(cardTable[x*2].bank));
+    RLEUnpack(gPattern, cardTable[x*2].p, 4096);
+    y=*((volatile unsigned char*)(cardTable[x*2+1].bank));
+    RLEUnpack(gColor, cardTable[x*2+1].p, 4096);
+}
+
+void drawCardReverse() {
+    // this actually flips the card, rather than RLEing it again
+    // count through the top half
+    for (unsigned char row=0; row<8; ++row) {
+        for (unsigned char col=4; col<28; ++col) {
+            unsigned char buf[8];
+            unsigned char buf2[8];
+            
+            int vdpsrc=row*32*8 + col*8 + gPattern;
+            int vdpdst=(15-row)*32*8 + col*8 + gPattern;
+            vdpmemread(vdpsrc, buf, 8);
+            vdpmemread(vdpdst, buf2, 8);
+            // invert write
+            VDP_SET_ADDRESS_WRITE(vdpdst);
+            for (signed char c=7; c>=0; --c) {
+                VDPWD = buf[c];
+            }
+            VDP_SET_ADDRESS_WRITE(vdpsrc);
+            for (signed char c=7; c>=0; --c) {
+               VDPWD = buf2[c];
+            }
+     
+            vdpsrc=row*32*8 + col*8 + gColor;
+            vdpdst=(15-row)*32*8 + col*8 + gColor;
+            vdpmemread(vdpsrc, buf, 8);
+            vdpmemread(vdpdst, buf2, 8);
+            // invert write
+            VDP_SET_ADDRESS_WRITE(vdpdst);
+            //VDPWA=vdpdst&0xff;
+            //VDPWA=(vdpdst>>8)|0x40;
+            for (signed char c=7; c>=0; --c) {
+                VDPWD = buf[c];
+            }
+            VDP_SET_ADDRESS_WRITE(vdpsrc);
+            for (signed char c=7; c>=0; --c) {
+                VDPWD = buf2[c];
+            }
+        }
+    }
 }
 
 // present one card
-void read1()
+void read1(const char *p)
 {
-    int x,y,fl,a;
+    unsigned char x,y,fl,a;
+    
+    // hide the old card
+    vdpmemset(gColor, 0, 4*1024);
+    vdpmemset(gImage+16*32, ' ', 8*32);
+    
+    // print the header
+    printf("\n%s\n", p);
+    
     fl=1;
     x=0;y=0;
     while(fl)
@@ -614,31 +734,69 @@ void read1()
         }
     }
     picked[cnum++]=x;
+
+    drawCard(x);
+    
+    // get the text
     read(x);
-    sndcr();
-    rprint(cardn);
+    
+    // using printf here for tighter control of vertical spacing
+    printf("%s\n", cardn);
     if(y) {
-        rprint("This card is reversed.");
-        rprint(cardmr);
+        printf("This card is reversed.\n");
+        drawCardReverse();
+        printf("%s", cardmr);
     } else {
-        rprint(cardm);
+        printf("%s", cardm);
     }
-    sndcr();
-    getkey();
+    getkey(1);  // suppress --PRESS ANY KEY--
 }
 
+#if 0
 // as a test, dump all cards so formatting can be checked
 void readall() {
-    int x;
+    int x,y,fl,a;
+    
+    set_bitmap(0);
+    nTextFlags = TEXT_WIDTH_32; // remove special purpose flags and make it dumb
+    VDP_SET_REGISTER(VDP_REG_COL, COLOR_DKBLUE);
+    // blank out the color and pattern tables
+    vdpmemset(gColor, 0, 6*1024);
+    vdpmemset(gPattern, 0, 6*1024);
+    // we need to force the character set into the third block    
+    gPattern+=0x1000;
+    charsetlc();
+    gPattern-=0x1000;
+    // set up bitmap on the top, text on the bottom
+    vdpwriteinc(gImage, 0, 512);
+    vdpmemset(gImage+512, ' ', 32*8);
+    // and give the text area some color
+    vdpmemset(gColor+4*1024, 0xf0, 2*1024);
+    
+    // and change the scroll function
+    scrn_scroll = scrn_scroll_last8;
+
     for (x=0; x<78; ++x) {
+        // hide the old card
+        vdpmemset(gColor, 0, 4*1024);
+        vdpmemset(gImage+16*32, ' ', 8*32);
+        
         read(x);
-        sndcr();
-        rprint(cardn);
-        rprint(cardm);
-        rprint("Reversed:");
-        rprint(cardmr);
-        sndcr();
-        getkey();
+
+        printf("\nThis card is visible.\nThis is line two.\n");
+        drawCard(x);
+        printf("%s\n",cardn);
+        printf("%s\n",cardm);
+        getkey(1);
+        
+        printf("\n\n\n\n\n\n\n\n");
+        drawCardReverse();
+        printf("This card is visible.\nThis is line two.\n");
+        printf("%s\n",cardn);
+        printf("Reversed:\n");
+        printf("%s", cardmr);
+        getkey(1);
     }
 }
+#endif
 

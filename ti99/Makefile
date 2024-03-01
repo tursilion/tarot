@@ -31,7 +31,7 @@ LIBPATH=-L/mnt/d/work/libti99ALL/buildti
 LIBS=-lti99
 
 # Note: no-function-cse prevents gcc from preferring registers for bl calls
-C_FLAGS=-Os -std=c99 -c -s --save-temp -DTI99 -fno-builtin -fno-function-cse
+C_FLAGS=-Os -std=c99 -c -s --save-temp -DTI99 -fno-builtin -fno-function-cse -fomit-frame-pointer
 
 # List of all files needed in executable
 PREREQUISITES=$(OBJECT_LIST) $(objs)

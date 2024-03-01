@@ -425,7 +425,6 @@ void drawCard(int x) {
 
 void drawCardReverse() {
     // this actually flips the card, rather than RLEing it again
-    int off=32; // skip the first 4 columns, they are empty
     // count through the top half
     for (int row=0; row<8; ++row) {
         for (int col=4; col<28; ++col) {
@@ -478,6 +477,7 @@ void read1(const char *p)
     printf("\n%s\n", p);
     
     fl=1;
+    x=0;y=0;
     while(fl)
     {
         x=rnd(78); y=rnd(2);
