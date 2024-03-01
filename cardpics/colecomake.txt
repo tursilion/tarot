@@ -1,0 +1,312 @@
+CARD01.rlep.rel: CARD01.rlep.c
+	$(CC) $(CFLAGS) --codeseg card01p --constseg card01p -o CARD01.rlep.rel CARD01.rlep.c
+CARD01.rlec.rel: CARD01.rlec.c
+	$(CC) $(CFLAGS) --codeseg card01c --constseg card01c -o CARD01.rlec.rel CARD01.rlec.c
+CARD02.rlep.rel: CARD02.rlep.c
+	$(CC) $(CFLAGS) --codeseg card02p --constseg card02p -o CARD02.rlep.rel CARD02.rlep.c
+CARD02.rlec.rel: CARD02.rlec.c
+	$(CC) $(CFLAGS) --codeseg card02c --constseg card02c -o CARD02.rlec.rel CARD02.rlec.c
+CARD03.rlep.rel: CARD03.rlep.c
+	$(CC) $(CFLAGS) --codeseg card03p --constseg card03p -o CARD03.rlep.rel CARD03.rlep.c
+CARD03.rlec.rel: CARD03.rlec.c
+	$(CC) $(CFLAGS) --codeseg card03c --constseg card03c -o CARD03.rlec.rel CARD03.rlec.c
+CARD04.rlep.rel: CARD04.rlep.c
+	$(CC) $(CFLAGS) --codeseg card04p --constseg card04p -o CARD04.rlep.rel CARD04.rlep.c
+CARD04.rlec.rel: CARD04.rlec.c
+	$(CC) $(CFLAGS) --codeseg card04c --constseg card04c -o CARD04.rlec.rel CARD04.rlec.c
+CARD05.rlep.rel: CARD05.rlep.c
+	$(CC) $(CFLAGS) --codeseg card05p --constseg card05p -o CARD05.rlep.rel CARD05.rlep.c
+CARD05.rlec.rel: CARD05.rlec.c
+	$(CC) $(CFLAGS) --codeseg card05c --constseg card05c -o CARD05.rlec.rel CARD05.rlec.c
+CARD06.rlep.rel: CARD06.rlep.c
+	$(CC) $(CFLAGS) --codeseg card06p --constseg card06p -o CARD06.rlep.rel CARD06.rlep.c
+CARD06.rlec.rel: CARD06.rlec.c
+	$(CC) $(CFLAGS) --codeseg card06c --constseg card06c -o CARD06.rlec.rel CARD06.rlec.c
+CARD07.rlep.rel: CARD07.rlep.c
+	$(CC) $(CFLAGS) --codeseg card07p --constseg card07p -o CARD07.rlep.rel CARD07.rlep.c
+CARD07.rlec.rel: CARD07.rlec.c
+	$(CC) $(CFLAGS) --codeseg card07c --constseg card07c -o CARD07.rlec.rel CARD07.rlec.c
+CARD08.rlep.rel: CARD08.rlep.c
+	$(CC) $(CFLAGS) --codeseg card08p --constseg card08p -o CARD08.rlep.rel CARD08.rlep.c
+CARD08.rlec.rel: CARD08.rlec.c
+	$(CC) $(CFLAGS) --codeseg card08c --constseg card08c -o CARD08.rlec.rel CARD08.rlec.c
+CARD09.rlep.rel: CARD09.rlep.c
+	$(CC) $(CFLAGS) --codeseg card09p --constseg card09p -o CARD09.rlep.rel CARD09.rlep.c
+CARD09.rlec.rel: CARD09.rlec.c
+	$(CC) $(CFLAGS) --codeseg card09c --constseg card09c -o CARD09.rlec.rel CARD09.rlec.c
+CARD10.rlep.rel: CARD10.rlep.c
+	$(CC) $(CFLAGS) --codeseg card10p --constseg card10p -o CARD10.rlep.rel CARD10.rlep.c
+CARD10.rlec.rel: CARD10.rlec.c
+	$(CC) $(CFLAGS) --codeseg card10c --constseg card10c -o CARD10.rlec.rel CARD10.rlec.c
+CARD11.rlep.rel: CARD11.rlep.c
+	$(CC) $(CFLAGS) --codeseg card11p --constseg card11p -o CARD11.rlep.rel CARD11.rlep.c
+CARD11.rlec.rel: CARD11.rlec.c
+	$(CC) $(CFLAGS) --codeseg card11c --constseg card11c -o CARD11.rlec.rel CARD11.rlec.c
+CARD12.rlep.rel: CARD12.rlep.c
+	$(CC) $(CFLAGS) --codeseg card12p --constseg card12p -o CARD12.rlep.rel CARD12.rlep.c
+CARD12.rlec.rel: CARD12.rlec.c
+	$(CC) $(CFLAGS) --codeseg card12c --constseg card12c -o CARD12.rlec.rel CARD12.rlec.c
+CARD13.rlep.rel: CARD13.rlep.c
+	$(CC) $(CFLAGS) --codeseg card13p --constseg card13p -o CARD13.rlep.rel CARD13.rlep.c
+CARD13.rlec.rel: CARD13.rlec.c
+	$(CC) $(CFLAGS) --codeseg card13c --constseg card13c -o CARD13.rlec.rel CARD13.rlec.c
+CARD14.rlep.rel: CARD14.rlep.c
+	$(CC) $(CFLAGS) --codeseg card14p --constseg card14p -o CARD14.rlep.rel CARD14.rlep.c
+CARD14.rlec.rel: CARD14.rlec.c
+	$(CC) $(CFLAGS) --codeseg card14c --constseg card14c -o CARD14.rlec.rel CARD14.rlec.c
+CARD15.rlep.rel: CARD15.rlep.c
+	$(CC) $(CFLAGS) --codeseg card15p --constseg card15p -o CARD15.rlep.rel CARD15.rlep.c
+CARD15.rlec.rel: CARD15.rlec.c
+	$(CC) $(CFLAGS) --codeseg card15c --constseg card15c -o CARD15.rlec.rel CARD15.rlec.c
+CARD16.rlep.rel: CARD16.rlep.c
+	$(CC) $(CFLAGS) --codeseg card16p --constseg card16p -o CARD16.rlep.rel CARD16.rlep.c
+CARD16.rlec.rel: CARD16.rlec.c
+	$(CC) $(CFLAGS) --codeseg card16c --constseg card16c -o CARD16.rlec.rel CARD16.rlec.c
+CARD17.rlep.rel: CARD17.rlep.c
+	$(CC) $(CFLAGS) --codeseg card17p --constseg card17p -o CARD17.rlep.rel CARD17.rlep.c
+CARD17.rlec.rel: CARD17.rlec.c
+	$(CC) $(CFLAGS) --codeseg card17c --constseg card17c -o CARD17.rlec.rel CARD17.rlec.c
+CARD18.rlep.rel: CARD18.rlep.c
+	$(CC) $(CFLAGS) --codeseg card18p --constseg card18p -o CARD18.rlep.rel CARD18.rlep.c
+CARD18.rlec.rel: CARD18.rlec.c
+	$(CC) $(CFLAGS) --codeseg card18c --constseg card18c -o CARD18.rlec.rel CARD18.rlec.c
+CARD19.rlep.rel: CARD19.rlep.c
+	$(CC) $(CFLAGS) --codeseg card19p --constseg card19p -o CARD19.rlep.rel CARD19.rlep.c
+CARD19.rlec.rel: CARD19.rlec.c
+	$(CC) $(CFLAGS) --codeseg card19c --constseg card19c -o CARD19.rlec.rel CARD19.rlec.c
+CARD20.rlep.rel: CARD20.rlep.c
+	$(CC) $(CFLAGS) --codeseg card20p --constseg card20p -o CARD20.rlep.rel CARD20.rlep.c
+CARD20.rlec.rel: CARD20.rlec.c
+	$(CC) $(CFLAGS) --codeseg card20c --constseg card20c -o CARD20.rlec.rel CARD20.rlec.c
+CARD21.rlep.rel: CARD21.rlep.c
+	$(CC) $(CFLAGS) --codeseg card21p --constseg card21p -o CARD21.rlep.rel CARD21.rlep.c
+CARD21.rlec.rel: CARD21.rlec.c
+	$(CC) $(CFLAGS) --codeseg card21c --constseg card21c -o CARD21.rlec.rel CARD21.rlec.c
+CARD22.rlep.rel: CARD22.rlep.c
+	$(CC) $(CFLAGS) --codeseg card22p --constseg card22p -o CARD22.rlep.rel CARD22.rlep.c
+CARD22.rlec.rel: CARD22.rlec.c
+	$(CC) $(CFLAGS) --codeseg card22c --constseg card22c -o CARD22.rlec.rel CARD22.rlec.c
+CARD36.rlep.rel: CARD36.rlep.c
+	$(CC) $(CFLAGS) --codeseg card36p --constseg card36p -o CARD36.rlep.rel CARD36.rlep.c
+CARD36.rlec.rel: CARD36.rlec.c
+	$(CC) $(CFLAGS) --codeseg card36c --constseg card36c -o CARD36.rlec.rel CARD36.rlec.c
+CARD35.rlep.rel: CARD35.rlep.c
+	$(CC) $(CFLAGS) --codeseg card35p --constseg card35p -o CARD35.rlep.rel CARD35.rlep.c
+CARD35.rlec.rel: CARD35.rlec.c
+	$(CC) $(CFLAGS) --codeseg card35c --constseg card35c -o CARD35.rlec.rel CARD35.rlec.c
+CARD34.rlep.rel: CARD34.rlep.c
+	$(CC) $(CFLAGS) --codeseg card34p --constseg card34p -o CARD34.rlep.rel CARD34.rlep.c
+CARD34.rlec.rel: CARD34.rlec.c
+	$(CC) $(CFLAGS) --codeseg card34c --constseg card34c -o CARD34.rlec.rel CARD34.rlec.c
+CARD33.rlep.rel: CARD33.rlep.c
+	$(CC) $(CFLAGS) --codeseg card33p --constseg card33p -o CARD33.rlep.rel CARD33.rlep.c
+CARD33.rlec.rel: CARD33.rlec.c
+	$(CC) $(CFLAGS) --codeseg card33c --constseg card33c -o CARD33.rlec.rel CARD33.rlec.c
+CARD32.rlep.rel: CARD32.rlep.c
+	$(CC) $(CFLAGS) --codeseg card32p --constseg card32p -o CARD32.rlep.rel CARD32.rlep.c
+CARD32.rlec.rel: CARD32.rlec.c
+	$(CC) $(CFLAGS) --codeseg card32c --constseg card32c -o CARD32.rlec.rel CARD32.rlec.c
+CARD31.rlep.rel: CARD31.rlep.c
+	$(CC) $(CFLAGS) --codeseg card31p --constseg card31p -o CARD31.rlep.rel CARD31.rlep.c
+CARD31.rlec.rel: CARD31.rlec.c
+	$(CC) $(CFLAGS) --codeseg card31c --constseg card31c -o CARD31.rlec.rel CARD31.rlec.c
+CARD30.rlep.rel: CARD30.rlep.c
+	$(CC) $(CFLAGS) --codeseg card30p --constseg card30p -o CARD30.rlep.rel CARD30.rlep.c
+CARD30.rlec.rel: CARD30.rlec.c
+	$(CC) $(CFLAGS) --codeseg card30c --constseg card30c -o CARD30.rlec.rel CARD30.rlec.c
+CARD29.rlep.rel: CARD29.rlep.c
+	$(CC) $(CFLAGS) --codeseg card29p --constseg card29p -o CARD29.rlep.rel CARD29.rlep.c
+CARD29.rlec.rel: CARD29.rlec.c
+	$(CC) $(CFLAGS) --codeseg card29c --constseg card29c -o CARD29.rlec.rel CARD29.rlec.c
+CARD28.rlep.rel: CARD28.rlep.c
+	$(CC) $(CFLAGS) --codeseg card28p --constseg card28p -o CARD28.rlep.rel CARD28.rlep.c
+CARD28.rlec.rel: CARD28.rlec.c
+	$(CC) $(CFLAGS) --codeseg card28c --constseg card28c -o CARD28.rlec.rel CARD28.rlec.c
+CARD27.rlep.rel: CARD27.rlep.c
+	$(CC) $(CFLAGS) --codeseg card27p --constseg card27p -o CARD27.rlep.rel CARD27.rlep.c
+CARD27.rlec.rel: CARD27.rlec.c
+	$(CC) $(CFLAGS) --codeseg card27c --constseg card27c -o CARD27.rlec.rel CARD27.rlec.c
+CARD26.rlep.rel: CARD26.rlep.c
+	$(CC) $(CFLAGS) --codeseg card26p --constseg card26p -o CARD26.rlep.rel CARD26.rlep.c
+CARD26.rlec.rel: CARD26.rlec.c
+	$(CC) $(CFLAGS) --codeseg card26c --constseg card26c -o CARD26.rlec.rel CARD26.rlec.c
+CARD25.rlep.rel: CARD25.rlep.c
+	$(CC) $(CFLAGS) --codeseg card25p --constseg card25p -o CARD25.rlep.rel CARD25.rlep.c
+CARD25.rlec.rel: CARD25.rlec.c
+	$(CC) $(CFLAGS) --codeseg card25c --constseg card25c -o CARD25.rlec.rel CARD25.rlec.c
+CARD24.rlep.rel: CARD24.rlep.c
+	$(CC) $(CFLAGS) --codeseg card24p --constseg card24p -o CARD24.rlep.rel CARD24.rlep.c
+CARD24.rlec.rel: CARD24.rlec.c
+	$(CC) $(CFLAGS) --codeseg card24c --constseg card24c -o CARD24.rlec.rel CARD24.rlec.c
+CARD23.rlep.rel: CARD23.rlep.c
+	$(CC) $(CFLAGS) --codeseg card23p --constseg card23p -o CARD23.rlep.rel CARD23.rlep.c
+CARD23.rlec.rel: CARD23.rlec.c
+	$(CC) $(CFLAGS) --codeseg card23c --constseg card23c -o CARD23.rlec.rel CARD23.rlec.c
+CARD50.rlep.rel: CARD50.rlep.c
+	$(CC) $(CFLAGS) --codeseg card50p --constseg card50p -o CARD50.rlep.rel CARD50.rlep.c
+CARD50.rlec.rel: CARD50.rlec.c
+	$(CC) $(CFLAGS) --codeseg card50c --constseg card50c -o CARD50.rlec.rel CARD50.rlec.c
+CARD49.rlep.rel: CARD49.rlep.c
+	$(CC) $(CFLAGS) --codeseg card49p --constseg card49p -o CARD49.rlep.rel CARD49.rlep.c
+CARD49.rlec.rel: CARD49.rlec.c
+	$(CC) $(CFLAGS) --codeseg card49c --constseg card49c -o CARD49.rlec.rel CARD49.rlec.c
+CARD48.rlep.rel: CARD48.rlep.c
+	$(CC) $(CFLAGS) --codeseg card48p --constseg card48p -o CARD48.rlep.rel CARD48.rlep.c
+CARD48.rlec.rel: CARD48.rlec.c
+	$(CC) $(CFLAGS) --codeseg card48c --constseg card48c -o CARD48.rlec.rel CARD48.rlec.c
+CARD47.rlep.rel: CARD47.rlep.c
+	$(CC) $(CFLAGS) --codeseg card47p --constseg card47p -o CARD47.rlep.rel CARD47.rlep.c
+CARD47.rlec.rel: CARD47.rlec.c
+	$(CC) $(CFLAGS) --codeseg card47c --constseg card47c -o CARD47.rlec.rel CARD47.rlec.c
+CARD46.rlep.rel: CARD46.rlep.c
+	$(CC) $(CFLAGS) --codeseg card46p --constseg card46p -o CARD46.rlep.rel CARD46.rlep.c
+CARD46.rlec.rel: CARD46.rlec.c
+	$(CC) $(CFLAGS) --codeseg card46c --constseg card46c -o CARD46.rlec.rel CARD46.rlec.c
+CARD45.rlep.rel: CARD45.rlep.c
+	$(CC) $(CFLAGS) --codeseg card45p --constseg card45p -o CARD45.rlep.rel CARD45.rlep.c
+CARD45.rlec.rel: CARD45.rlec.c
+	$(CC) $(CFLAGS) --codeseg card45c --constseg card45c -o CARD45.rlec.rel CARD45.rlec.c
+CARD44.rlep.rel: CARD44.rlep.c
+	$(CC) $(CFLAGS) --codeseg card44p --constseg card44p -o CARD44.rlep.rel CARD44.rlep.c
+CARD44.rlec.rel: CARD44.rlec.c
+	$(CC) $(CFLAGS) --codeseg card44c --constseg card44c -o CARD44.rlec.rel CARD44.rlec.c
+CARD43.rlep.rel: CARD43.rlep.c
+	$(CC) $(CFLAGS) --codeseg card43p --constseg card43p -o CARD43.rlep.rel CARD43.rlep.c
+CARD43.rlec.rel: CARD43.rlec.c
+	$(CC) $(CFLAGS) --codeseg card43c --constseg card43c -o CARD43.rlec.rel CARD43.rlec.c
+CARD42.rlep.rel: CARD42.rlep.c
+	$(CC) $(CFLAGS) --codeseg card42p --constseg card42p -o CARD42.rlep.rel CARD42.rlep.c
+CARD42.rlec.rel: CARD42.rlec.c
+	$(CC) $(CFLAGS) --codeseg card42c --constseg card42c -o CARD42.rlec.rel CARD42.rlec.c
+CARD41.rlep.rel: CARD41.rlep.c
+	$(CC) $(CFLAGS) --codeseg card41p --constseg card41p -o CARD41.rlep.rel CARD41.rlep.c
+CARD41.rlec.rel: CARD41.rlec.c
+	$(CC) $(CFLAGS) --codeseg card41c --constseg card41c -o CARD41.rlec.rel CARD41.rlec.c
+CARD40.rlep.rel: CARD40.rlep.c
+	$(CC) $(CFLAGS) --codeseg card40p --constseg card40p -o CARD40.rlep.rel CARD40.rlep.c
+CARD40.rlec.rel: CARD40.rlec.c
+	$(CC) $(CFLAGS) --codeseg card40c --constseg card40c -o CARD40.rlec.rel CARD40.rlec.c
+CARD39.rlep.rel: CARD39.rlep.c
+	$(CC) $(CFLAGS) --codeseg card39p --constseg card39p -o CARD39.rlep.rel CARD39.rlep.c
+CARD39.rlec.rel: CARD39.rlec.c
+	$(CC) $(CFLAGS) --codeseg card39c --constseg card39c -o CARD39.rlec.rel CARD39.rlec.c
+CARD38.rlep.rel: CARD38.rlep.c
+	$(CC) $(CFLAGS) --codeseg card38p --constseg card38p -o CARD38.rlep.rel CARD38.rlep.c
+CARD38.rlec.rel: CARD38.rlec.c
+	$(CC) $(CFLAGS) --codeseg card38c --constseg card38c -o CARD38.rlec.rel CARD38.rlec.c
+CARD37.rlep.rel: CARD37.rlep.c
+	$(CC) $(CFLAGS) --codeseg card37p --constseg card37p -o CARD37.rlep.rel CARD37.rlep.c
+CARD37.rlec.rel: CARD37.rlec.c
+	$(CC) $(CFLAGS) --codeseg card37c --constseg card37c -o CARD37.rlec.rel CARD37.rlec.c
+CARD64.rlep.rel: CARD64.rlep.c
+	$(CC) $(CFLAGS) --codeseg card64p --constseg card64p -o CARD64.rlep.rel CARD64.rlep.c
+CARD64.rlec.rel: CARD64.rlec.c
+	$(CC) $(CFLAGS) --codeseg card64c --constseg card64c -o CARD64.rlec.rel CARD64.rlec.c
+CARD63.rlep.rel: CARD63.rlep.c
+	$(CC) $(CFLAGS) --codeseg card63p --constseg card63p -o CARD63.rlep.rel CARD63.rlep.c
+CARD63.rlec.rel: CARD63.rlec.c
+	$(CC) $(CFLAGS) --codeseg card63c --constseg card63c -o CARD63.rlec.rel CARD63.rlec.c
+CARD62.rlep.rel: CARD62.rlep.c
+	$(CC) $(CFLAGS) --codeseg card62p --constseg card62p -o CARD62.rlep.rel CARD62.rlep.c
+CARD62.rlec.rel: CARD62.rlec.c
+	$(CC) $(CFLAGS) --codeseg card62c --constseg card62c -o CARD62.rlec.rel CARD62.rlec.c
+CARD61.rlep.rel: CARD61.rlep.c
+	$(CC) $(CFLAGS) --codeseg card61p --constseg card61p -o CARD61.rlep.rel CARD61.rlep.c
+CARD61.rlec.rel: CARD61.rlec.c
+	$(CC) $(CFLAGS) --codeseg card61c --constseg card61c -o CARD61.rlec.rel CARD61.rlec.c
+CARD60.rlep.rel: CARD60.rlep.c
+	$(CC) $(CFLAGS) --codeseg card60p --constseg card60p -o CARD60.rlep.rel CARD60.rlep.c
+CARD60.rlec.rel: CARD60.rlec.c
+	$(CC) $(CFLAGS) --codeseg card60c --constseg card60c -o CARD60.rlec.rel CARD60.rlec.c
+CARD59.rlep.rel: CARD59.rlep.c
+	$(CC) $(CFLAGS) --codeseg card59p --constseg card59p -o CARD59.rlep.rel CARD59.rlep.c
+CARD59.rlec.rel: CARD59.rlec.c
+	$(CC) $(CFLAGS) --codeseg card59c --constseg card59c -o CARD59.rlec.rel CARD59.rlec.c
+CARD58.rlep.rel: CARD58.rlep.c
+	$(CC) $(CFLAGS) --codeseg card58p --constseg card58p -o CARD58.rlep.rel CARD58.rlep.c
+CARD58.rlec.rel: CARD58.rlec.c
+	$(CC) $(CFLAGS) --codeseg card58c --constseg card58c -o CARD58.rlec.rel CARD58.rlec.c
+CARD57.rlep.rel: CARD57.rlep.c
+	$(CC) $(CFLAGS) --codeseg card57p --constseg card57p -o CARD57.rlep.rel CARD57.rlep.c
+CARD57.rlec.rel: CARD57.rlec.c
+	$(CC) $(CFLAGS) --codeseg card57c --constseg card57c -o CARD57.rlec.rel CARD57.rlec.c
+CARD56.rlep.rel: CARD56.rlep.c
+	$(CC) $(CFLAGS) --codeseg card56p --constseg card56p -o CARD56.rlep.rel CARD56.rlep.c
+CARD56.rlec.rel: CARD56.rlec.c
+	$(CC) $(CFLAGS) --codeseg card56c --constseg card56c -o CARD56.rlec.rel CARD56.rlec.c
+CARD55.rlep.rel: CARD55.rlep.c
+	$(CC) $(CFLAGS) --codeseg card55p --constseg card55p -o CARD55.rlep.rel CARD55.rlep.c
+CARD55.rlec.rel: CARD55.rlec.c
+	$(CC) $(CFLAGS) --codeseg card55c --constseg card55c -o CARD55.rlec.rel CARD55.rlec.c
+CARD54.rlep.rel: CARD54.rlep.c
+	$(CC) $(CFLAGS) --codeseg card54p --constseg card54p -o CARD54.rlep.rel CARD54.rlep.c
+CARD54.rlec.rel: CARD54.rlec.c
+	$(CC) $(CFLAGS) --codeseg card54c --constseg card54c -o CARD54.rlec.rel CARD54.rlec.c
+CARD53.rlep.rel: CARD53.rlep.c
+	$(CC) $(CFLAGS) --codeseg card53p --constseg card53p -o CARD53.rlep.rel CARD53.rlep.c
+CARD53.rlec.rel: CARD53.rlec.c
+	$(CC) $(CFLAGS) --codeseg card53c --constseg card53c -o CARD53.rlec.rel CARD53.rlec.c
+CARD52.rlep.rel: CARD52.rlep.c
+	$(CC) $(CFLAGS) --codeseg card52p --constseg card52p -o CARD52.rlep.rel CARD52.rlep.c
+CARD52.rlec.rel: CARD52.rlec.c
+	$(CC) $(CFLAGS) --codeseg card52c --constseg card52c -o CARD52.rlec.rel CARD52.rlec.c
+CARD51.rlep.rel: CARD51.rlep.c
+	$(CC) $(CFLAGS) --codeseg card51p --constseg card51p -o CARD51.rlep.rel CARD51.rlep.c
+CARD51.rlec.rel: CARD51.rlec.c
+	$(CC) $(CFLAGS) --codeseg card51c --constseg card51c -o CARD51.rlec.rel CARD51.rlec.c
+CARD78.rlep.rel: CARD78.rlep.c
+	$(CC) $(CFLAGS) --codeseg card78p --constseg card78p -o CARD78.rlep.rel CARD78.rlep.c
+CARD78.rlec.rel: CARD78.rlec.c
+	$(CC) $(CFLAGS) --codeseg card78c --constseg card78c -o CARD78.rlec.rel CARD78.rlec.c
+CARD77.rlep.rel: CARD77.rlep.c
+	$(CC) $(CFLAGS) --codeseg card77p --constseg card77p -o CARD77.rlep.rel CARD77.rlep.c
+CARD77.rlec.rel: CARD77.rlec.c
+	$(CC) $(CFLAGS) --codeseg card77c --constseg card77c -o CARD77.rlec.rel CARD77.rlec.c
+CARD76.rlep.rel: CARD76.rlep.c
+	$(CC) $(CFLAGS) --codeseg card76p --constseg card76p -o CARD76.rlep.rel CARD76.rlep.c
+CARD76.rlec.rel: CARD76.rlec.c
+	$(CC) $(CFLAGS) --codeseg card76c --constseg card76c -o CARD76.rlec.rel CARD76.rlec.c
+CARD75.rlep.rel: CARD75.rlep.c
+	$(CC) $(CFLAGS) --codeseg card75p --constseg card75p -o CARD75.rlep.rel CARD75.rlep.c
+CARD75.rlec.rel: CARD75.rlec.c
+	$(CC) $(CFLAGS) --codeseg card75c --constseg card75c -o CARD75.rlec.rel CARD75.rlec.c
+CARD74.rlep.rel: CARD74.rlep.c
+	$(CC) $(CFLAGS) --codeseg card74p --constseg card74p -o CARD74.rlep.rel CARD74.rlep.c
+CARD74.rlec.rel: CARD74.rlec.c
+	$(CC) $(CFLAGS) --codeseg card74c --constseg card74c -o CARD74.rlec.rel CARD74.rlec.c
+CARD73.rlep.rel: CARD73.rlep.c
+	$(CC) $(CFLAGS) --codeseg card73p --constseg card73p -o CARD73.rlep.rel CARD73.rlep.c
+CARD73.rlec.rel: CARD73.rlec.c
+	$(CC) $(CFLAGS) --codeseg card73c --constseg card73c -o CARD73.rlec.rel CARD73.rlec.c
+CARD72.rlep.rel: CARD72.rlep.c
+	$(CC) $(CFLAGS) --codeseg card72p --constseg card72p -o CARD72.rlep.rel CARD72.rlep.c
+CARD72.rlec.rel: CARD72.rlec.c
+	$(CC) $(CFLAGS) --codeseg card72c --constseg card72c -o CARD72.rlec.rel CARD72.rlec.c
+CARD71.rlep.rel: CARD71.rlep.c
+	$(CC) $(CFLAGS) --codeseg card71p --constseg card71p -o CARD71.rlep.rel CARD71.rlep.c
+CARD71.rlec.rel: CARD71.rlec.c
+	$(CC) $(CFLAGS) --codeseg card71c --constseg card71c -o CARD71.rlec.rel CARD71.rlec.c
+CARD70.rlep.rel: CARD70.rlep.c
+	$(CC) $(CFLAGS) --codeseg card70p --constseg card70p -o CARD70.rlep.rel CARD70.rlep.c
+CARD70.rlec.rel: CARD70.rlec.c
+	$(CC) $(CFLAGS) --codeseg card70c --constseg card70c -o CARD70.rlec.rel CARD70.rlec.c
+CARD69.rlep.rel: CARD69.rlep.c
+	$(CC) $(CFLAGS) --codeseg card69p --constseg card69p -o CARD69.rlep.rel CARD69.rlep.c
+CARD69.rlec.rel: CARD69.rlec.c
+	$(CC) $(CFLAGS) --codeseg card69c --constseg card69c -o CARD69.rlec.rel CARD69.rlec.c
+CARD68.rlep.rel: CARD68.rlep.c
+	$(CC) $(CFLAGS) --codeseg card68p --constseg card68p -o CARD68.rlep.rel CARD68.rlep.c
+CARD68.rlec.rel: CARD68.rlec.c
+	$(CC) $(CFLAGS) --codeseg card68c --constseg card68c -o CARD68.rlec.rel CARD68.rlec.c
+CARD67.rlep.rel: CARD67.rlep.c
+	$(CC) $(CFLAGS) --codeseg card67p --constseg card67p -o CARD67.rlep.rel CARD67.rlep.c
+CARD67.rlec.rel: CARD67.rlec.c
+	$(CC) $(CFLAGS) --codeseg card67c --constseg card67c -o CARD67.rlec.rel CARD67.rlec.c
+CARD66.rlep.rel: CARD66.rlep.c
+	$(CC) $(CFLAGS) --codeseg card66p --constseg card66p -o CARD66.rlep.rel CARD66.rlep.c
+CARD66.rlec.rel: CARD66.rlec.c
+	$(CC) $(CFLAGS) --codeseg card66c --constseg card66c -o CARD66.rlec.rel CARD66.rlec.c
+CARD65.rlep.rel: CARD65.rlep.c
+	$(CC) $(CFLAGS) --codeseg card65p --constseg card65p -o CARD65.rlep.rel CARD65.rlep.c
+CARD65.rlec.rel: CARD65.rlec.c
+	$(CC) $(CFLAGS) --codeseg card65c --constseg card65c -o CARD65.rlec.rel CARD65.rlec.c

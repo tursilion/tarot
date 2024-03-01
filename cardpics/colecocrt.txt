@@ -1,0 +1,225 @@
+
+.area _bank1
+	.ascii "LinkTag:Bank1\0"
+	.area _card01p
+	.area _card01c
+	.area _card02p
+	.area _card02c
+	.area _card03p
+	.area _card03c
+	.area _card04p
+
+.area _bank2
+	.ascii "LinkTag:Bank2\0"
+	.area _card04c
+	.area _card05p
+	.area _card05c
+	.area _card06p
+	.area _card06c
+	.area _card07p
+
+.area _bank3
+	.ascii "LinkTag:Bank3\0"
+	.area _card07c
+	.area _card08p
+	.area _card08c
+	.area _card09p
+	.area _card09c
+	.area _card10p
+
+.area _bank4
+	.ascii "LinkTag:Bank4\0"
+	.area _card10c
+	.area _card11p
+	.area _card11c
+	.area _card12p
+	.area _card12c
+	.area _card13p
+
+.area _bank5
+	.ascii "LinkTag:Bank5\0"
+	.area _card13c
+	.area _card14p
+	.area _card14c
+	.area _card15p
+	.area _card15c
+	.area _card16p
+	.area _card16c
+
+.area _bank6
+	.ascii "LinkTag:Bank6\0"
+	.area _card17p
+	.area _card17c
+	.area _card18p
+	.area _card18c
+	.area _card19p
+	.area _card19c
+
+.area _bank7
+	.ascii "LinkTag:Bank7\0"
+	.area _card20p
+	.area _card20c
+	.area _card21p
+	.area _card21c
+	.area _card22p
+	.area _card22c
+
+.area _bank8
+	.ascii "LinkTag:Bank8\0"
+	.area _card36p
+	.area _card36c
+	.area _card35p
+	.area _card35c
+	.area _card34p
+	.area _card34c
+	.area _card33p
+
+.area _bank9
+	.ascii "LinkTag:Bank9\0"
+	.area _card33c
+	.area _card32p
+	.area _card32c
+	.area _card31p
+	.area _card31c
+	.area _card30p
+	.area _card30c
+	.area _card29p
+
+.area _bank10
+	.ascii "LinkTag:Bank10\0"
+	.area _card29c
+	.area _card28p
+	.area _card28c
+	.area _card27p
+	.area _card27c
+	.area _card26p
+	.area _card26c
+
+.area _bank11
+	.ascii "LinkTag:Bank11\0"
+	.area _card25p
+	.area _card25c
+	.area _card24p
+	.area _card24c
+	.area _card23p
+	.area _card23c
+	.area _card50p
+	.area _card50c
+
+.area _bank12
+	.ascii "LinkTag:Bank12\0"
+	.area _card49p
+	.area _card49c
+	.area _card48p
+	.area _card48c
+	.area _card47p
+	.area _card47c
+	.area _card46p
+
+.area _bank13
+	.ascii "LinkTag:Bank13\0"
+	.area _card46c
+	.area _card45p
+	.area _card45c
+	.area _card44p
+	.area _card44c
+	.area _card43p
+
+.area _bank14
+	.ascii "LinkTag:Bank14\0"
+	.area _card43c
+	.area _card42p
+	.area _card42c
+	.area _card41p
+	.area _card41c
+	.area _card40p
+	.area _card40c
+
+.area _bank15
+	.ascii "LinkTag:Bank15\0"
+	.area _card39p
+	.area _card39c
+	.area _card38p
+	.area _card38c
+	.area _card37p
+	.area _card37c
+	.area _card64p
+
+.area _bank16
+	.ascii "LinkTag:Bank16\0"
+	.area _card64c
+	.area _card63p
+	.area _card63c
+	.area _card62p
+	.area _card62c
+	.area _card61p
+	.area _card61c
+
+.area _bank17
+	.ascii "LinkTag:Bank17\0"
+	.area _card60p
+	.area _card60c
+	.area _card59p
+	.area _card59c
+	.area _card58p
+	.area _card58c
+	.area _card57p
+	.area _card57c
+
+.area _bank18
+	.ascii "LinkTag:Bank18\0"
+	.area _card56p
+	.area _card56c
+	.area _card55p
+	.area _card55c
+	.area _card54p
+	.area _card54c
+	.area _card53p
+
+.area _bank19
+	.ascii "LinkTag:Bank19\0"
+	.area _card53c
+	.area _card52p
+	.area _card52c
+	.area _card51p
+	.area _card51c
+	.area _card78p
+	.area _card78c
+
+.area _bank20
+	.ascii "LinkTag:Bank20\0"
+	.area _card77p
+	.area _card77c
+	.area _card76p
+	.area _card76c
+	.area _card75p
+	.area _card75c
+	.area _card74p
+
+.area _bank21
+	.ascii "LinkTag:Bank21\0"
+	.area _card74c
+	.area _card73p
+	.area _card73c
+	.area _card72p
+	.area _card72c
+	.area _card71p
+	.area _card71c
+
+.area _bank22
+	.ascii "LinkTag:Bank22\0"
+	.area _card70p
+	.area _card70c
+	.area _card69p
+	.area _card69c
+	.area _card68p
+	.area _card68c
+	.area _card67p
+
+.area _bank23
+	.ascii "LinkTag:Bank23\0"
+	.area _card67c
+	.area _card66p
+	.area _card66c
+	.area _card65p
+	.area _card65c
